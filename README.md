@@ -1,6 +1,10 @@
 # Pyrants T-Store
 
 Este repo contiene hasta la fecha, el desarrollo de un proyecto que busca aplicar todos los conceptos de programacion orientada a objetos en python, que consta de una tienda de videojuegos y perifericos relacionados al gaming, todo esto presentado mediante código y aun mas importante una estructuración organizada de todo el sistema de clases que gestiona la tienda. 
+#### Integrantes:
+* Samuel Medina Pulido
+* Miguel Angel Moreno 
+* Sebastian Burtica Velasco 
 ## Objetivos
 #### Objetivos general
 * Aplicar de manera integral y didáctica todos los conceptos fundamentales de la Programación Orientada a Objetos (POO) utilizando Python.
