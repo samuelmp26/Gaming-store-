@@ -9,14 +9,12 @@ class Inventario:
 
     def agregar_producto(self, producto):
         if producto.codigo in self.productos:
-            # Excepción personalizada si ya existe un código igual
             raise CodigoDuplicadoError(f"Ya existe el código {producto.codigo}")
         self.productos[producto.codigo] = producto
         print(f"Producto '{producto.nombre}' agregado correctamente.")
 
     def registrar_entrada(self, codigo, cantidad):
         if codigo not in self.productos:
-            # Excepción si el producto no está en el inventario
             raise ProductoNoEncontradoError(f"Producto con código '{codigo}' no encontrado.")
         producto = self.productos[codigo]
         producto.actualizar_cantidad(cantidad)
