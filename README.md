@@ -96,7 +96,7 @@ direction TB
 *  La clase persistencia su única tarea es saber cómo guardar el estado actual del Inventario y sus Movimientos en almacenamiento permanente (disco duro) y luego cargarlos de vuelta. La clase reporte necesita acceder a los datos del Inventario para crear resúmenes, y exportar esa información en formatos estructurados.
 *  Carga Masiva encargada de procesar datos externos (como archivos CSV o JSON) e integrarlos al inventario.
 *  La interfaz de consola permite la interacción entre el programa y el usuario de una forma comprenmsible e amigable.
-* Contiene la lógica económica del negocio. Determina los precios de compra y venta basándose en reglas (margen_ganancia, reglas_demanda)
+* La clase negociante contiene la lógica económica del negocio. Determina los precios de compra y venta basándose en reglas (margen_ganancia, reglas_demanda)
 
 
 
