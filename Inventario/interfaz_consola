@@ -1,0 +1,31 @@
+from .inventario import Inventario
+from .producto import Producto
+
+class InterfazConsola:
+    def __init__(self):
+        self.inventario = Inventario()
+        self.inventario.cargar_datos()
+
+    def mostrar_menu(self):
+        print("\n=== Sistema de Inventario ===")
+        print("1. Agregar producto")
+        print("2. Mostrar inventario")
+        print("3. Salir")
+
+    def ejecutar_opcion(self, opcion):
+        if opcion == "1":
+            codigo = input("Código: ")
+            nombre = input("Nombre: ")
+            categoria = input("Categoría: ")
+            precio = float(input("Precio: "))
+            cantidad = int(input("Cantidad: "))
+            p = Producto(codigo, nombre, categoria, precio, cantidad)
+            self.inventario.agregar_producto(p)
+            self.inventario.guardar_datos()
+        elif opcion == "2":
+            self.inventario.listar_inventario()
+        elif opcion == "3":
+            print("Saliendo...")
+            exit()
+        else:
+            print("Opción no válida")
