@@ -10,7 +10,7 @@ Este repo contiene hasta la fecha, el desarrollo de un proyecto que busca aplica
 * Aplicar de manera integral y didáctica todos los conceptos fundamentales de la Programación Orientada a Objetos (POO) utilizando Python.
 #### Objetivos especificos 
 * Diseñar e implementar un sistema de gestión para una tienda de videojuegos que permita registrar, consultar y administrar productos, clientes y ventas de forma eficiente.
-* Crear una interfaz amigable para el usuario que simplifique la aplicacion de el codigo.
+* Crear una interfaz amigable para el operador que simplifique la aplicacion de el codigo, ya que se requiere para agilizar los procesos al momento de vender.
 ## Marco teórico 
 Para dar contexto del proyecto es necesario abordar algunos conceptos importantes en POO. Para empezar ¿Cual es el enfoque de POO? Esta rama de la programacion utiliza objetos para modelar sistemas del mundo real , ademas almacena colecciones de objetos que interactuan entre si, el proposito de POO es la reusabilidad, la mantenibilidad y la escalabilidad del código, agrupando datos (atributos) y el comportamiento (métodos). A forma de resumen los 4 pilares de POO son los siguientes:
 * Abstracción: Se trata de mostrar todo lo importante al usuario, ocultando el codigo base o todos los mecanismos que permiten la operacion del codigo abstraido.
@@ -19,6 +19,7 @@ Para dar contexto del proyecto es necesario abordar algunos conceptos importante
 * Polimorfismo: Este concepto nos dice que un objeto puede tener muchas formas , es decir , dependiendo de quien lo invoca se comporta de manera diferente, con ello simplifica el entendimiento y la extension del codigo ya que se pueden tratar objetos de difrentes clases de manera uniforme.
 ## Justificacion
 Más allá de enfocarse en la tienda de videojuegos y destinar todo el proposito a la creación como tal , el proyecto busca utilizar de forma muy aplicada todos los conceptos aprendidos de la programacion orientada a objetos de forma dinámica. Al estar buscando alternativas que cumplieran este propósito , hemos seleccionado deliberadamente el contexto del comercio electrónico de gaming porque sus características inherentes—la diversidad de productos (juegos, consolas, periféricos), la complejidad de las interacciones (clientes, carritos, pedidos) y la necesidad de clasificación detallada (géneros, plataformas, especificaciones)—ofrecen el escenario perfecto para aplicar de forma dinámica los 4 pilares de POO , tales como herencia, polimorfismo , abstraccion y encapsulamiento. 
+
 ## ¿ Como se aborda el problema?
 Para abordar el "problema" o el diseño estructurado del codigo,se opta, primero pot crear un diagrama de clases que describe el sistema de relación entre clases. Para que el diagrama sea mas entendible se explica a continuación por partes. 
  ````mermaid
@@ -203,7 +204,7 @@ class Producto {
     Producto <|-- CapturadoraVideo
 
 ````
-Como se puede observar hay muchos tipos de producto , ya que cada producto tiene atributos distintos , pero que hereden de la clase madre que es producto. 
+Como se puede observar hay muchos tipos de productos , ya que cada producto tiene atributos distintos , pero que hereden de la clase madre que es producto, en su momoento se defeniran con atributos de instancia. 
 
 
 Cabe resaltar que para codigo futuro mucho mas realizado , se plantea el manejo de una clase madre que maneje excepciones pata todo el código.
