@@ -208,11 +208,21 @@ Como se puede observar hay muchos tipos de productos , ya que cada producto tien
 
 
 Cabe resaltar que para codigo futuro mucho mas realizado , se plantea el manejo de una clase madre que maneje excepciones pata todo el código.
+```mermaid
+classDiagram
+direction TB
+
+    Excepciones <|-- ProductoNoEncontradoError
+    Excepciones <|-- StockInsuficienteError
+    Excepciones <|-- CodigoDuplicadoError
+    Excepciones <|-- ArchivoInvalidoError
+
+
+````
 
 
 
-
-Para 
+ 
 ## Ejecucion del programa
 
 
