@@ -91,7 +91,13 @@ direction TB
 
 
 ````
-La clase principal es inventario (nucleo del sistema)  que gestiona los productos y los movimientos, y está rodeada de clases que manejan la persistencia, la interfaz, los reportes y la lógica de negocio.
+* La clase principal es inventario (nucleo del sistema)  que gestiona los productos y los movimientos, y está rodeada de clases que manejan la persistencia, la interfaz, los reportes y la lógica de negocio.
+*  La clase registro movimiento actúa como un objeto de datos (Data Object) que registra cada transacción (entrada o salida de stock). Almacena detalles cruciales como la cantidad, el precio unitario y la fecha.
+*  La clase persistencia su única tarea es saber cómo guardar el estado actual del Inventario y sus Movimientos en almacenamiento permanente (disco duro) y luego cargarlos de vuelta. La clase reporte necesita acceder a los datos del Inventario para crear resúmenes, y exportar esa información en formatos estructurados.
+*  Carga Masiva encargada de procesar datos externos (como archivos CSV o JSON) e integrarlos al inventario.
+*  La interfaz de consola permite la interacción entre el programa y el usuario de una forma comprenmsible e amigable.
+* Contiene la lógica económica del negocio. Determina los precios de compra y venta basándose en reglas (margen_ganancia, reglas_demanda)
+
 
 
 Aqui se presenta la relación entre inventario y producto 
