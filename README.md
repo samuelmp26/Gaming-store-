@@ -197,7 +197,7 @@ class Producto {
     Producto <|-- CapturadoraVideo
 
 ````
-
+Cabe resaltar que para codigo futuro mucho mas realizado , se plantea el manejo de una clase madre que maneje excepciones pata todo el código.
 Como se puede observar hay muchos tipos de producto , ya que cada producto tiene atributos distintos , pero que hereden de la clase madre que es producto. 
 
 
