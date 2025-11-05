@@ -207,7 +207,7 @@ class Producto {
 Como se puede observar hay muchos tipos de productos , ya que cada producto tiene atributos distintos , pero que hereden de la clase madre que es producto, en su momoento se defeniran con atributos de instancia. 
 
 
-Cabe resaltar que para codigo futuro mucho mas realizado , se plantea el manejo de una clase madre que maneje excepciones pata todo el código.
+Cabe resaltar que para codigo futuro mucho mas realizado , se plantea el manejo de una clase madre que maneje excepciones pata todo el código, estas excepciones son las sugeridas en general.
 ```mermaid
 classDiagram
 direction TB
