@@ -204,6 +204,5 @@ Como se puede observar hay muchos tipos de producto , ya que cada producto tiene
 
 Para 
 ## Ejecucion del programa
-Para ejecutar el codigo , es necesario organizar modulos y paquetes para una mayor organizacion ya que es fácil tener errores para un codigo en un solo módulo. 
 
 
