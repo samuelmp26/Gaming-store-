@@ -82,12 +82,12 @@ direction TB
 	    + simular_negociacion(producto, tipo)
     }
     class cliente{
-       + str nombre 
-       + str id 
-       + str telefono 
-       + str correo 
-       + str fecha_de_registro
-       + list() historial_de_compras
+       - str nombre 
+       - str id 
+       - str telefono 
+       - str correo 
+       - str fecha_de_registro
+       - list() historial_de_compras
 
        + comprar()
        + vender()
