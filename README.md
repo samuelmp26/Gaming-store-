@@ -81,6 +81,17 @@ direction TB
 	    + ofrecer_precio_venta(producto)
 	    + simular_negociacion(producto, tipo)
     }
+    class cliente{
+       + str nombre 
+       + str id 
+       + str telefono 
+       + str correo 
+       + str fecha_de_registro
+       + list() historial_de_compras
+
+       + comprar()
+       + vender()
+    }
 
     Inventario "1" *-- "*" RegistroMovimiento : registra >
     Inventario --> Persistencia : usa >
