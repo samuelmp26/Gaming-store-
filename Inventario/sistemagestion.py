@@ -1,8 +1,12 @@
 import csv
 import json
+import os
 from datetime import datetime
 from typing import List, Dict
-import os
+import Inventario.factura as IMPfactura
+import Inventario.cliente as IMPcliente
+import Inventario.productos as IMPproductos
+import Inventario.venta as IMPventa
 try:
     import openpyxl
     from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -10,191 +14,14 @@ try:
 except ImportError:
     EXCEL_DISPONIBLE = False
     print("Módulo openpyxl no disponible. Instale con: pip install openpyxl")
-
-# ==================== CLASES BASE ====================
-
-class Producto:
-    """Clase base para todos los productos"""
-    def __init__(self, id_producto: str, nombre: str, categoria: str, precio: float, stock: int):
-        self.id_producto = id_producto
-        self.nombre = nombre
-        self.categoria = categoria
-        self.precio = precio
-        self.stock = stock
     
-    def __str__(self):
-        return f"{self.id_producto} | {self.nombre} | ${self.precio:.2f} | Stock: {self.stock}"
-
-class Videojuego(Producto):
-    """Clase específica para videojuegos"""
-    def __init__(self, id_producto: str, nombre: str, precio: float, stock: int, 
-                 plataforma: str, genero: str, año: int):
-        super().__init__(id_producto, nombre, "Videojuego", precio, stock)
-        self.plataforma = plataforma
-        self.genero = genero
-        self.año = año
-    
-    def __str__(self):
-        return f"{super().__str__()} | {self.plataforma} | {self.genero} | {self.año}"
-
-class ProductoGaming(Producto):
-    """Clase para productos gaming (accesorios, hardware, etc.)"""
-    def __init__(self, id_producto: str, nombre: str, precio: float, stock: int, 
-                 tipo: str, marca: str):
-        super().__init__(id_producto, nombre, "Gaming", precio, stock)
-        self.tipo = tipo
-        self.marca = marca
-    
-    def __str__(self):
-        return f"{super().__str__()} | {self.tipo} | {self.marca}"
-
-class Cliente:
-    """Clase para gestionar clientes"""
-    def __init__(self, id_cliente: str, nombre: str, email: str, telefono: str):
-        self.id_cliente = id_cliente
-        self.nombre = nombre
-        self.email = email
-        self.telefono = telefono
-        self.historial_compras = []
-
-
-    def __str__(self):
-        return f"ID: {self.id_cliente} | {self.nombre} | {self.email} | {self.telefono}"
-
-class ItemFactura:
-    """Clase para items individuales en una factura"""
-    def __init__(self, producto: Producto, cantidad: int):
-        self.producto = producto
-        self.cantidad = cantidad
-        self.subtotal = producto.precio * cantidad
-    
-    def __str__(self):
-        return f"{self.producto.nombre} x{self.cantidad} - ${self.subtotal:.2f}"
-
-class Factura:
-    """Clase para gestionar facturas"""
-    def __init__(self, id_factura: str, cliente: Cliente):
-        self.id_factura = id_factura
-        self.cliente = cliente
-        self.items: List[ItemFactura] = []
-        self.fecha = datetime.now()
-        self.total = 0.0
-    
-    def agregar_item(self, producto: Producto, cantidad: int):
-        if producto.stock >= cantidad:
-            item = ItemFactura(producto, cantidad)
-            self.items.append(item)
-            producto.stock -= cantidad
-            self.calcular_total()
-            return True
-        return False
-    
-    def calcular_total(self):
-        self.total = sum(item.subtotal for item in self.items)
-    
-    def generar_resumen(self) -> str:
-        resumen = f"\n{'='*60}\n"
-        resumen += f"FACTURA #{self.id_factura}\n"
-        resumen += f"Fecha: {self.fecha.strftime('%Y-%m-%d %H:%M:%S')}\n"
-        resumen += f"Cliente: {self.cliente.nombre}\n"
-        resumen += f"{'='*60}\n\n"
-        
-        for item in self.items:
-            resumen += f"{item}\n"
-        
-        resumen += f"\n{'='*60}\n"
-        resumen += f"TOTAL: ${self.total:.2f}\n"
-        resumen += f"{'='*60}\n"
-        return resumen
-
-class EvaluacionProductoUsado:
-    """Clase para evaluar productos usados que los clientes quieren vender"""
-    
-    CONDICIONES = {
-        "excelente": 0.85,
-        "bueno": 0.65,
-        "medio": 0.45,
-        "malo": 0.20
-    }
-    
-    def __init__(self, producto_base: str, precio_original: float):
-        self.producto_base = producto_base
-        self.precio_original = precio_original
-        self.condicion_fisica = ""
-        self.funcionalidad = ""
-        self.accesorios_completos = True
-        self.precio_estimado = 0.0
-    
-    def evaluar(self, condicion_fisica: str, funcionalidad: str, accesorios: bool) -> Dict:
-        self.condicion_fisica = condicion_fisica
-        self.funcionalidad = funcionalidad
-        self.accesorios_completos = accesorios
-        
-        # Calcular precio estimado basado en múltiples factores
-        factor_condicion = self.CONDICIONES.get(condicion_fisica.lower(), 0.3)
-        factor_funcionalidad = self.CONDICIONES.get(funcionalidad.lower(), 0.3)
-        factor_accesorios = 1.0 if accesorios else 0.8
-        
-        # Promedio ponderado
-        factor_total = (factor_condicion * 0.4 + factor_funcionalidad * 0.5 + 
-                       (factor_accesorios - 0.8) * 0.5 + 0.8)
-        
-        self.precio_estimado = self.precio_original * factor_total
-        
-        return {
-            "precio_estimado": self.precio_estimado,
-            "condicion_general": self._determinar_condicion_general(factor_total)
-        }
-    
-    def _determinar_condicion_general(self, factor: float) -> str:
-        if factor >= 0.75:
-            return "excelente"
-        elif factor >= 0.55:
-            return "bueno"
-        elif factor >= 0.35:
-            return "medio"
-        else:
-            return "malo"
-    
-    def recomendar_negocio(self, precio_ofrecido: float) -> Dict:
-        """Analiza si conviene aceptar el negocio basado en el precio ofrecido"""
-        porcentaje_precio = (precio_ofrecido / self.precio_estimado) * 100
-        
-        # Lógica de recomendación
-        if precio_ofrecido <= self.precio_estimado * 1.1:
-            probabilidad_aceptar = 90
-            recomendacion = "ACEPTAR"
-            razon = "El precio está dentro del rango esperado"
-        elif precio_ofrecido <= self.precio_estimado * 1.3:
-            probabilidad_aceptar = 60
-            recomendacion = "CONSIDERAR"
-            razon = "El precio es un poco alto pero negociable"
-        elif precio_ofrecido <= self.precio_estimado * 1.5:
-            probabilidad_aceptar = 30
-            recomendacion = "DUDOSO"
-            razon = "El precio es significativamente alto"
-        else:
-            probabilidad_aceptar = 10
-            recomendacion = "RECHAZAR"
-            razon = "El precio excede el valor del producto"
-        
-        return {
-            "recomendacion": recomendacion,
-            "probabilidad_aceptar": probabilidad_aceptar,
-            "probabilidad_rechazar": 100 - probabilidad_aceptar,
-            "razon": razon,
-            "porcentaje_precio": porcentaje_precio
-        }
-
-# ==================== SISTEMA PRINCIPAL ====================
-
 class SistemaGestionTienda:
     """Sistema principal de gestión de la tienda"""
     
     def __init__(self):
-        self.productos: List[Producto] = []
-        self.clientes: Dict[str, Cliente] = {}
-        self.facturas: List[Factura] = []
+        self.productos: List[IMPproductos.Producto] = []
+        self.clientes: Dict[str, IMPcliente.Cliente] = {}
+        self.facturas: List[IMPfactura.Factura] = []
         self.contador_facturas = 1
         self.contador_clientes = 1
         self.cargar_productos_csv()
@@ -203,12 +30,14 @@ class SistemaGestionTienda:
     def cargar_datos_persistentes(self):
         """Carga clientes y facturas desde archivos JSON"""
         try:
+            utils_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+            clientes_path = os.path.join(utils_dir, 'clientes.json')
             # Cargar clientes
-            if os.path.exists('clientes.json'):
-                with open('clientes.json', 'r', encoding='utf-8') as f:
+            if os.path.exists(clientes_path):
+                with open(clientes_path, 'r', encoding='utf-8') as f:
                     datos_clientes = json.load(f)
                     for id_cliente, datos in datos_clientes.items():
-                        cliente = Cliente(
+                        cliente = IMPcliente.Cliente(
                             datos['id_cliente'],
                             datos['nombre'],
                             datos['email'],
@@ -223,15 +52,16 @@ class SistemaGestionTienda:
                         self.contador_clientes = ultimo_id + 1
                 
                 print(f"{len(self.clientes)} clientes cargados")
-            
+                
+            facturas_path = os.path.join(utils_dir, 'facturas.json')
             # Cargar facturas
-            if os.path.exists('facturas.json'):
-                with open('facturas.json', 'r', encoding='utf-8') as f:
+            if os.path.exists(facturas_path):
+                with open(facturas_path, 'r', encoding='utf-8') as f:
                     datos_facturas = json.load(f)
                     for datos_factura in datos_facturas:
                         cliente = self.clientes.get(datos_factura['id_cliente'])
                         if cliente:
-                            factura = Factura(datos_factura['id_factura'], cliente)
+                            factura = IMPfactura.Factura(datos_factura['id_factura'], cliente)
                             factura.fecha = datetime.fromisoformat(datos_factura['fecha'])
                             factura.total = datos_factura['total']
                             
@@ -239,7 +69,7 @@ class SistemaGestionTienda:
                             for item_data in datos_factura['items']:
                                 producto = self.buscar_producto(item_data['id_producto'])
                                 if producto:
-                                    item = ItemFactura(producto, item_data['cantidad'])
+                                    item = IMPfactura.ItemFactura(producto, item_data['cantidad'])
                                     factura.items.append(item)
                             
                             self.facturas.append(factura)
@@ -257,6 +87,8 @@ class SistemaGestionTienda:
     def guardar_datos_persistentes(self):
         """Guarda clientes y facturas en archivos JSON"""
         try:
+            utils_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+            os.makedirs(utils_dir, exist_ok=True)
             # Guardar clientes
             datos_clientes = {}
             for id_cliente, cliente in self.clientes.items():
@@ -267,8 +99,8 @@ class SistemaGestionTienda:
                     'telefono': cliente.telefono,
                     'historial_compras': cliente.historial_compras
                 }
-            
-            with open('clientes.json', 'w', encoding='utf-8') as f:
+            clientes_path = os.path.join(utils_dir, 'clientes.json')
+            with open(clientes_path, 'w', encoding='utf-8') as f:
                 json.dump(datos_clientes, f, indent=2, ensure_ascii=False)
             
             # Guardar facturas
@@ -288,8 +120,8 @@ class SistemaGestionTienda:
                     'total': factura.total,
                     'items': items_data
                 })
-            
-            with open('facturas.json', 'w', encoding='utf-8') as f:
+            facturas_path = os.path.join(utils_dir, 'facturas.json')
+            with open(facturas_path, 'w', encoding='utf-8') as f:
                 json.dump(datos_facturas, f, indent=2, ensure_ascii=False)
             
             print("Datos guardados exitosamente")
@@ -300,11 +132,14 @@ class SistemaGestionTienda:
     def cargar_productos_csv(self):
         """Carga productos desde archivos CSV"""
         try:
+            utils_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+            videojuegos_path = os.path.join(utils_dir, 'videojuegos.csv')
+            productos_gaming_path = os.path.join(utils_dir, 'productos_gaming.csv')
             # Cargar videojuegos
-            with open('videojuegos.csv', 'r', encoding='utf-8') as f:
+            with open(videojuegos_path, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    vj = Videojuego(
+                    vj = IMPproductos.Videojuego(
                         row['id'], row['nombre'], float(row['precio']),
                         int(row['stock']), row['plataforma'], 
                         row['genero'], int(row['año'])
@@ -312,10 +147,10 @@ class SistemaGestionTienda:
                     self.productos.append(vj)
             
             # Cargar productos gaming
-            with open('productos_gaming.csv', 'r', encoding='utf-8') as f:
+            with open(productos_gaming_path, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 for row in reader:
-                    pg = ProductoGaming(
+                    pg = IMPproductos.ProductoGaming(
                         row['id'], row['nombre'], float(row['precio']),
                         int(row['stock']), row['tipo'], row['marca']
                     )
@@ -328,8 +163,11 @@ class SistemaGestionTienda:
     
     def crear_csv_ejemplo(self):
         """Crea archivos CSV de ejemplo"""
+        utils_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+        videojuegos_path = os.path.join(utils_dir, 'videojuegos.csv')
+        productos_path = os.path.join(utils_dir, 'productos_gaming.csv')
         # CSV de videojuegos
-        with open('videojuegos.csv', 'w', newline='', encoding='utf-8') as f:
+        with open(videojuegos_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(['id', 'nombre', 'precio', 'stock', 'plataforma', 'genero', 'año'])
             writer.writerow(['VJ001', 'The Last of Us Part II', 59.99, 15, 'PS5', 'Acción', 2020])
@@ -339,7 +177,7 @@ class SistemaGestionTienda:
             writer.writerow(['VJ005', 'Cyberpunk 2077', 39.99, 8, 'PS5', 'RPG', 2020])
         
         # CSV de productos gaming
-        with open('productos_gaming.csv', 'w', newline='', encoding='utf-8') as f:
+        with open(productos_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(['id', 'nombre', 'precio', 'stock', 'tipo', 'marca'])
             writer.writerow(['PG001', 'Control PS5 DualSense', 69.99, 25, 'Control', 'Sony'])
@@ -348,7 +186,7 @@ class SistemaGestionTienda:
             writer.writerow(['PG004', 'Mouse Gamer Logitech G502', 79.99, 20, 'Mouse', 'Logitech'])
             writer.writerow(['PG005', 'Silla Gamer DXRacer', 299.99, 5, 'Mobiliario', 'DXRacer'])
         
-        print("Archivos CSV de ejemplo creados")
+        print("Archivos CSV de ejemplo creados en: {utils_dir}")
         self.cargar_productos_csv()
     
     def mostrar_catalogo(self):
@@ -359,24 +197,24 @@ class SistemaGestionTienda:
         
         print("\n--- VIDEOJUEGOS ---")
         for p in self.productos:
-            if isinstance(p, Videojuego):
+            if isinstance(p, IMPproductos.Videojuego):
                 print(p)
         
         print("\n--- PRODUCTOS GAMING ---")
         for p in self.productos:
-            if isinstance(p, ProductoGaming):
+            if isinstance(p, IMPproductos.ProductoGaming):
                 print(p)
         
         print("="*80)
     
-    def buscar_producto(self, id_producto: str) -> Producto:
+    def buscar_producto(self, id_producto: str) -> IMPproductos.Producto:
         """Busca un producto por ID"""
         for p in self.productos:
             if p.id_producto == id_producto:
                 return p
         return None
     
-    def buscar_producto_por_nombre(self, nombre: str) -> List[Producto]:
+    def buscar_producto_por_nombre(self, nombre: str) -> List[IMPproductos.Producto]:
         """Busca productos por nombre (coincidencia parcial)"""
         nombre_lower = nombre.lower()
         resultados = []
@@ -395,14 +233,14 @@ class SistemaGestionTienda:
         print(f"{'ID':<8} {'Nombre':<35} {'Precio':<12} {'Plataforma':<12} {'Stock':<8}")
         print("-"*100)
         for p in self.productos:
-            if isinstance(p, Videojuego):
+            if isinstance(p, IMPproductos.Videojuego):
                 print(f"{p.id_producto:<8} {p.nombre:<35} ${p.precio:<11.2f} {p.plataforma:<12} {p.stock:<8}")
         
         print("\n--- PRODUCTOS GAMING ---")
         print(f"{'ID':<8} {'Nombre':<35} {'Precio':<12} {'Tipo':<12} {'Stock':<8}")
         print("-"*100)
         for p in self.productos:
-            if isinstance(p, ProductoGaming):
+            if isinstance(p, IMPproductos.ProductoGaming):
                 print(f"{p.id_producto:<8} {p.nombre:<35} ${p.precio:<11.2f} {p.tipo:<12} {p.stock:<8}")
         print("="*100)
     
@@ -414,7 +252,7 @@ class SistemaGestionTienda:
         telefono = input("Teléfono: ")
         
         id_cliente = f"CLI{self.contador_clientes:04d}"
-        cliente = Cliente(id_cliente, nombre, email, telefono)
+        cliente = IMPcliente.Cliente(id_cliente, nombre, email, telefono)
         self.clientes[id_cliente] = cliente
         self.contador_clientes += 1
         
@@ -424,7 +262,7 @@ class SistemaGestionTienda:
         print(f"✓ Cliente registrado exitosamente. ID: {id_cliente}")
         return cliente
     
-    def buscar_cliente_por_nombre(self, nombre: str) -> List[Cliente]:
+    def buscar_cliente_por_nombre(self, nombre: str) -> List[IMPcliente.Cliente]:
         """Busca clientes por nombre (coincidencia parcial)"""
         nombre_lower = nombre.lower()
         resultados = []
@@ -444,7 +282,7 @@ class SistemaGestionTienda:
             print(f"{cliente.id_cliente:<10} {cliente.nombre:<30} {cliente.email:<30} {cliente.telefono:<15}")
         print("="*100)
     
-    def seleccionar_cliente(self) -> Cliente:
+    def seleccionar_cliente(self) -> IMPcliente.Cliente:
         """Interfaz mejorada para seleccionar o registrar cliente"""
         print("\n--- SELECCIÓN DE CLIENTE ---")
         print("Opciones: [ID] / [buscar:nombre] / [lista] / [nuevo]")
@@ -505,7 +343,7 @@ class SistemaGestionTienda:
         
         # Crear factura
         id_factura = f"F{self.contador_facturas:05d}"
-        factura = Factura(id_factura, cliente)
+        factura = IMPfactura.Factura(id_factura, cliente)
         self.contador_facturas += 1
         
         # Agregar productos
@@ -600,10 +438,13 @@ class SistemaGestionTienda:
         
         for factura in self.facturas:
             if factura.id_factura == id_factura:
+                export_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'facturas'))
+                os.makedirs(export_dir, exist_ok=True)
                 nombre_archivo = f"factura_{id_factura}.txt"
-                with open(nombre_archivo, 'w', encoding='utf-8') as f:
+                ruta_completa = os.path.join(export_dir, nombre_archivo)
+                with open(ruta_completa, 'w', encoding='utf-8') as f:
                     f.write(factura.generar_resumen())
-                print(f"✓ Factura exportada a {nombre_archivo}")
+                print(f"✓ Factura exportada a {ruta_completa}")
                 return
         print("Factura no encontrada")
     
@@ -716,9 +557,12 @@ class SistemaGestionTienda:
                 ws.column_dimensions['D'].width = 15
                 
                 # Guardar archivo
+                export_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'facturas'))
+                os.makedirs(export_dir, exist_ok=True)
                 nombre_archivo = f"factura_{id_factura}.xlsx"
-                wb.save(nombre_archivo)
-                print(f"✓ Factura exportada a Excel: {nombre_archivo}")
+                ruta_completa = os.path.join(export_dir, nombre_archivo)
+                wb.save(ruta_completa)
+                print(f"✓ Factura exportada a Excel: {ruta_completa}")
                 return
         
         print("Factura no encontrada")
@@ -843,9 +687,12 @@ class SistemaGestionTienda:
             ws.column_dimensions['D'].width = 15
         
         # Guardar archivo
+        export_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'facturas'))
+        os.makedirs(export_dir, exist_ok=True)
         nombre_archivo = f"facturas_completas_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
-        wb.save(nombre_archivo)
-        print(f"Todas las facturas exportadas a Excel: {nombre_archivo}")
+        ruta_completa = os.path.join(export_dir, nombre_archivo)
+        wb.save(ruta_completa)
+        print(f"Todas las facturas exportadas a Excel: {ruta_completa}")
         print(f"  - Total de facturas: {len(self.facturas)}")
         print(f"  - Total general: ${total_general:.2f}")
     
@@ -865,7 +712,7 @@ class SistemaGestionTienda:
             genero = input("Género: ")
             año = int(input("Año: "))
             
-            producto = Videojuego(id_prod, nombre, precio, stock, plataforma, genero, año)
+            producto = IMPproductos.Videojuego(id_prod, nombre, precio, stock, plataforma, genero, año)
         else:
             id_prod = input("ID: ")
             nombre = input("Nombre: ")
@@ -874,7 +721,7 @@ class SistemaGestionTienda:
             tipo_prod = input("Tipo (Control/Auriculares/etc): ")
             marca = input("Marca: ")
             
-            producto = ProductoGaming(id_prod, nombre, precio, stock, tipo_prod, marca)
+            producto = IMPproductos.ProductoGaming(id_prod, nombre, precio, stock, tipo_prod, marca)
         
         self.productos.append(producto)
         print("Producto agregado exitosamente")
@@ -891,7 +738,7 @@ class SistemaGestionTienda:
         
         if entrada.lower() == 'catalogo':
             self.mostrar_catalogo_compacto()
-            entrada = input("\nAhora ingrese ID o buscar:nombre: ").strip()
+            entrada = input("\nAhora ingrese ID o [buscar:] o [nombre:] ").strip()
         
         if entrada.lower() == 'manual':
             # Entrada manual
@@ -938,7 +785,7 @@ class SistemaGestionTienda:
                 print(f"Producto base: {nombre_producto} - Precio nuevo: ${precio_ref:.2f}")
         
         # Crear evaluación
-        evaluacion = EvaluacionProductoUsado(nombre_producto, precio_ref)
+        evaluacion = IMPventa.EvaluacionProductoUsado(nombre_producto, precio_ref)
         
         # Evaluación física
         print("\n--- EVALUACIÓN FÍSICA ---")
@@ -1057,9 +904,3 @@ class SistemaGestionTienda:
                 print("Opción inválida")
             
             input("\nPresione Enter para continuar...")
-
-# ==================== EJECUCIÓN ====================
-
-if __name__ == "__main__":
-    sistema = SistemaGestionTienda()
-    sistema.menu_principal()
