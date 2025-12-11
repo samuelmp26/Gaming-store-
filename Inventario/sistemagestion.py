@@ -30,7 +30,6 @@ class SistemaGestionTienda:
 
 
     def es_producto_resident_evil(self, producto: IMPproductos.Producto) -> bool:
-        """Verifica si un producto es de Resident Evil"""
         nombre_lower = producto.nombre.lower()
         keywords = ['resident evil', 'umbrella', 'stars', 'leon', 'jill', 'chris', 
                    'claire', 'ada wong', 'wesker', 'ethan', 'dimitrescu', 'nemesis']
@@ -38,7 +37,6 @@ class SistemaGestionTienda:
     
 
     def obtener_precio_con_descuento(self, producto: IMPproductos.Producto) -> tuple:
-        """Retorna (precio_final, descuento_aplicado, tiene_descuento)"""
         if self.es_producto_resident_evil(producto):
             descuento = producto.precio * self.DESCUENTO_RESIDENT_EVIL
             precio_final = producto.precio - descuento
@@ -774,12 +772,12 @@ class SistemaGestionTienda:
     
         evaluador = EvaluadorProducto()
     
-        # ===== EVALUACIÓN MANUAL COMPLETA =====
+
         if opcion != "1":
             evaluador.iniciar_evaluacion()
             return
     
-        # ===== BÚSQUEDA EN CATÁLOGO =====
+
         print("\n--- BUSCAR PRODUCTO ---")
         print("Opciones: [ID] / [buscar:nombre] / [catalogo]")
         entrada = input("Ingrese opción: ").strip()
