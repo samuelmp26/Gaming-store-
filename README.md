@@ -97,14 +97,17 @@ Al iniciar el programa, se presenta el siguiente menú:
 
 ```
 === SISTEMA DE GESTIÓN DE INVENTARIO ===
-1. Agregar nuevo producto
-2. Registrar entrada
-3. Registrar salida
-4. Ver inventario completo
-5. Buscar producto
-6. Cargar productos desde CSV
-7. Generar reportes
-8. Salir
+1. Ver catálogo de productos
+2. Registrar cliente
+3. Crear factura
+4. Exportar factura (TXT)
+5. Exportar factura (Excel)
+6. Exportar TODAS las facturas (Excel)
+7. Agregar producto al inventario
+8. Evaluar compra de producto usado
+9. Ver clientes registrados
+10. Ver facturas
+11. Salir
 ```
 
 ### Operaciones Principales
@@ -202,8 +205,9 @@ P002      Mouse          25.99     50
 
 ## Autores
 
-[Tu Nombre] - [Tu Correo/GitHub]  
-[Compañero 1] - [Correo/GitHub]
+Samuel Medina Pulido
+Miguel Moreno Alvarez
+Sebastian Buritica Velasco
 
 ## Notas de Desarrollo
 
