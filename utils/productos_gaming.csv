@@ -1,0 +1,31 @@
+id,nombre,precio,stock,tipo,marca,compatibilidad
+CAM001,Control Xbox Series X Verde,59.99,14,Control,Xbox Series X,Cable/USB-C
+CAM002,Control Xbox Series X Negro,59.99,16,Control,Xbox Series X,Cable/USB-C
+CAM003,Teclado Mecánico HyperX Alloy Origins,109.99,10,Teclado,HyperX,RGB/USB
+CAM004,Teclado Redragon Kumara K552,49.99,20,Teclado,Redragon,Switch Rojo/USB
+CAM005,Mouse Logitech G502 HERO,39.99,18,Mouse,Logitech,USB/6 Botones
+CAM006,Mouse Razer DeathAdder V2,69.99,12,Mouse,Razer,USB/Óptico
+CAM007,Auriculares Sony WH-1000XM4,299.99,8,Auriculares,Sony,Bluetooth/ANC
+CAM008,Auriculares HyperX Cloud II,99.99,15,Auriculares,HyperX,USB/Jack 3.5mm
+CAM009,Cámara Logitech C920 HD Pro,79.99,10,Cámara,Logitech,USB/1080p
+CAM010,Capturadora Elgato HD60 S+,179.99,5,Capturadora,Elgato,USB/HDMI
+CAM011,Adaptador USB Bluetooth 5.0,14.99,25,Adaptador,Generic,USB/Bluetooth 5.0
+CAM012,Luz LED RGB Nanoleaf Triangles,199.99,7,Iluminación,Nanoleaf,App/Bluetooth
+CAM013,Router TP-Link Archer AX10,89.99,9,Router,TP-Link,WiFi 6
+CAM014,Base Refrigerante KLIM Wind,29.99,14,Refrigeración,KLIM,USB/Doble Ventilador
+CAM015,Controlador DualSense PS5 Blanco,69.99,18,Control,Sony,PS5
+CAM016,Controlador DualSense PS5 Negro,69.99,17,Control,Sony,PS5
+CAM017,Controlador Joy-Con Neon Rojo/Azul,79.99,12,Control,Nintendo,Switch
+CAM018,Control Pro Controller Nintendo Switch,69.99,10,Control,Nintendo,Switch
+CAM019,Volante Logitech G29,249.99,6,Volante,Logitech,PS5/PC
+CAM020,Volante Thrustmaster T300 RS,399.99,4,Volante,Thrustmaster,PS5/PC
+CAM021,Headset Xbox Wireless,99.99,11,Auriculares,Xbox,Wireless
+CAM022,Auriculares JBL Quantum 200,49.99,13,Auriculares,JBL,Jack 3.5mm
+CAM023,Micrófono Blue Yeti,129.99,8,Micrófono,Blue,USB
+CAM024,Micrófono HyperX QuadCast S,159.99,7,Micrófono,HyperX,USB
+CAM025,Monitor ASUS TUF Gaming 27",279.99,5,Monitor,ASUS,HDMI/144Hz
+CAM026,Monitor LG UltraGear 24",199.99,6,Monitor,LG,HDMI/144Hz
+CAM027,Mousepad Logitech G640,29.99,20,Accesorio,Logitech,Grande
+CAM028,Mousepad Razer Goliathus,24.99,18,Accesorio,Razer,Speed
+CAM029,Cargador DualSense Charging Station,29.99,14,Accesorio,Sony,PS5
+CAM030,Base de Carga Joy-Con,19.99,16,Accesorio,Nintendo,Switch

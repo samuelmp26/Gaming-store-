@@ -1,0 +1,39 @@
+id,nombre,precio,stock,plataforma,genero,año,formato,desarrollador,clasificacion
+VJD001,The Last of Us Part II Remastered,59.99,15,PS5,Acción/Aventura,2024,Disco,Naughty Dog,M
+VJD002,Spider-Man 2,69.99,20,PS5,Acción/Aventura,2023,Disco,Insomniac Games,T
+VJD003,God of War Ragnarök,69.99,18,PS5,Acción/Aventura,2022,Disco,Santa Monica Studio,M
+VJD004,Horizon Forbidden West,59.99,12,PS5,Acción/RPG,2022,Disco,Guerrilla Games,T
+VJD005,Final Fantasy XVI,69.99,10,PS5,RPG,2023,Disco,Square Enix,M
+VJD006,Resident Evil 4 Remake,59.99,14,PS5,Terror/Acción,2023,Disco,Capcom,M
+VJD007,Demon's Souls,69.99,8,PS5,RPG/Acción,2020,Disco,Bluepoint Games,M
+VJD008,Ratchet & Clank: Rift Apart,59.99,11,PS5,Plataformas/Acción,2021,Disco,Insomniac Games,E10+
+VJD009,Ghost of Tsushima,49.99,16,PS4,Acción/Aventura,2020,Disco,Sucker Punch,M
+VJD010,Bloodborne,39.99,9,PS4,RPG/Acción,2015,Disco,FromSoftware,M
+VJD011,Uncharted 4,29.99,13,PS4,Acción/Aventura,2016,Disco,Naughty Dog,T
+VJD012,Persona 5 Royal,44.99,10,PS4,RPG,2020,Disco,Atlus,M
+VJD013,Starfield,69.99,22,Xbox Series X,RPG/Ciencia Ficción,2023,Disco,Bethesda,M
+VJD014,Forza Motorsport,69.99,15,Xbox Series X,Carreras,2023,Disco,Turn 10 Studios,E
+VJD015,Halo Infinite,59.99,18,Xbox Series X,FPS,2021,Disco,343 Industries,T
+VJD016,Gears 5,39.99,12,Xbox Series X,Acción/TPS,2019,Disco,The Coalition,M
+VJC001,The Legend of Zelda: Tears of the Kingdom,69.99,25,Switch,Aventura/Acción,2023,Cartucho,Nintendo,E10+
+VJC002,Super Mario Odyssey,59.99,20,Switch,Plataformas,2017,Cartucho,Nintendo,E10+
+VJC003,Animal Crossing: New Horizons,59.99,18,Switch,Simulación,2020,Cartucho,Nintendo,E
+VJC004,Mario Kart 8 Deluxe,59.99,30,Switch,Carreras,2017,Cartucho,Nintendo,E
+VJC005,Pokémon Scarlet,59.99,22,Switch,RPG,2022,Cartucho,Game Freak,E
+VJC006,Pokémon Violet,59.99,20,Switch,RPG,2022,Cartucho,Game Freak,E
+VJC007,Super Smash Bros. Ultimate,59.99,17,Switch,Pelea,2018,Cartucho,Nintendo,E10+
+VJC008,Splatoon 3,59.99,15,Switch,Shooter,2022,Cartucho,Nintendo,E10+
+VJC009,Metroid Dread,59.99,10,Switch,Acción/Aventura,2021,Cartucho,Nintendo,T
+VJC010,Kirby and the Forgotten Land,59.99,12,Switch,Plataformas,2022,Cartucho,Nintendo,E10+
+VJD017,Elden Ring,59.99,20,PC,RPG/Acción,2022,Disco,FromSoftware,M
+VJD018,Baldur's Gate 3,59.99,16,PC,RPG,2023,Disco,Larian Studios,M
+VJD019,Cyberpunk 2077,49.99,14,PC,RPG/Acción,2020,Disco,CD Projekt Red,M
+VJD020,Red Dead Redemption 2,59.99,11,PC,Acción/Aventura,2019,Disco,Rockstar Games,M
+VJD021,The Witcher 3: Wild Hunt,39.99,13,PC,RPG,2015,Disco,CD Projekt Red,M
+VJD022,FIFA 24,69.99,25,PS5,Deportes,2023,Disco,EA Sports,E
+VJD023,NBA 2K24,69.99,18,PS5,Deportes,2023,Disco,2K Sports,E
+VJD024,Call of Duty: Modern Warfare III,69.99,28,PS5,FPS,2023,Disco,Activision,M
+VJD025,Mortal Kombat 1,69.99,15,PS5,Pelea,2023,Disco,NetherRealm,M
+VJD026,Hogwarts Legacy,59.99,20,PS5,RPG/Aventura,2023,Disco,Warner Bros,T
+VJD027,Street Fighter 6,59.99,12,PS5,Pelea,2023,Disco,Capcom,T
+VJD028,Tekken 8,69.99,14,PS5,Pelea,2024,Disco,Bandai Namco,T
