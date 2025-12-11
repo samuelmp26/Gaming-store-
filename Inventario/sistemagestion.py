@@ -161,34 +161,7 @@ class SistemaGestionTienda:
             print("Archivos CSV no encontrados. Creando archivos de ejemplo...")
             self.crear_csv_ejemplo()
     
-    def crear_csv_ejemplo(self):
-        """Crea archivos CSV de ejemplo"""
-        utils_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils'))
-        videojuegos_path = os.path.join(utils_dir, 'videojuegos.csv')
-        productos_path = os.path.join(utils_dir, 'productos_gaming.csv')
-        # CSV de videojuegos
-        with open(videojuegos_path, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            writer.writerow(['id', 'nombre', 'precio', 'stock', 'plataforma', 'genero', 'año'])
-            writer.writerow(['VJ001', 'The Last of Us Part II', 59.99, 15, 'PS5', 'Acción', 2020])
-            writer.writerow(['VJ002', 'Elden Ring', 49.99, 20, 'PC', 'RPG', 2022])
-            writer.writerow(['VJ003', 'FIFA 24', 69.99, 10, 'Xbox', 'Deportes', 2023])
-            writer.writerow(['VJ004', 'Zelda: Tears of Kingdom', 59.99, 12, 'Switch', 'Aventura', 2023])
-            writer.writerow(['VJ005', 'Cyberpunk 2077', 39.99, 8, 'PS5', 'RPG', 2020])
-        
-        # CSV de productos gaming
-        with open(productos_path, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            writer.writerow(['id', 'nombre', 'precio', 'stock', 'tipo', 'marca'])
-            writer.writerow(['PG001', 'Control PS5 DualSense', 69.99, 25, 'Control', 'Sony'])
-            writer.writerow(['PG002', 'Auriculares HyperX Cloud II', 99.99, 15, 'Auriculares', 'HyperX'])
-            writer.writerow(['PG003', 'Teclado Mecánico RGB', 129.99, 10, 'Teclado', 'Razer'])
-            writer.writerow(['PG004', 'Mouse Gamer Logitech G502', 79.99, 20, 'Mouse', 'Logitech'])
-            writer.writerow(['PG005', 'Silla Gamer DXRacer', 299.99, 5, 'Mobiliario', 'DXRacer'])
-        
-        print("Archivos CSV de ejemplo creados en: {utils_dir}")
-        self.cargar_productos_csv()
-    
+  
     def mostrar_catalogo(self):
         """Muestra el catálogo completo de productos"""
         print("\n" + "="*80)
@@ -247,19 +220,31 @@ class SistemaGestionTienda:
     def registrar_cliente(self):
         """Registra un nuevo cliente"""
         print("\n--- REGISTRO DE CLIENTE ---")
-        nombre = input("Nombre completo: ")
-        email = input("Email: ")
-        telefono = input("Teléfono: ")
-        
+        while True:
+                nombre = input("Nombre completo: ").strip()
+                if nombre:
+                    break
+                print("El nombre no puede estar vacío. Intente de nuevo.")
+
+        while True:
+            email = input("Email: ").strip()
+            if "@" in email and "." in email:
+                break
+            print("Email inválido. Intente de nuevo.")
+
+        while True:
+            telefono = input("Teléfono: ").strip()
+            if telefono.isdigit() and len(telefono) >= 7:
+                break
+            print("El teléfono debe contener solo números y tener al menos 7 dígitos.")
         id_cliente = f"CLI{self.contador_clientes:04d}"
         cliente = IMPcliente.Cliente(id_cliente, nombre, email, telefono)
         self.clientes[id_cliente] = cliente
         self.contador_clientes += 1
         
-        # Guardar automáticamente
         self.guardar_datos_persistentes()
         
-        print(f"✓ Cliente registrado exitosamente. ID: {id_cliente}")
+        print(f"Cliente registrado exitosamente. ID: {id_cliente}")
         return cliente
     
     def buscar_cliente_por_nombre(self, nombre: str) -> List[IMPcliente.Cliente]:

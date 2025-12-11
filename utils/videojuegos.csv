@@ -1,39 +1,121 @@
-id,nombre,precio,stock,plataforma,genero,año,formato,desarrollador,clasificacion
-VJD001,The Last of Us Part II Remastered,59.99,15,PS5,Acción/Aventura,2024,Disco,Naughty Dog,M
-VJD002,Spider-Man 2,69.99,20,PS5,Acción/Aventura,2023,Disco,Insomniac Games,T
-VJD003,God of War Ragnarök,69.99,18,PS5,Acción/Aventura,2022,Disco,Santa Monica Studio,M
-VJD004,Horizon Forbidden West,59.99,12,PS5,Acción/RPG,2022,Disco,Guerrilla Games,T
-VJD005,Final Fantasy XVI,69.99,10,PS5,RPG,2023,Disco,Square Enix,M
-VJD006,Resident Evil 4 Remake,59.99,14,PS5,Terror/Acción,2023,Disco,Capcom,M
-VJD007,Demon's Souls,69.99,8,PS5,RPG/Acción,2020,Disco,Bluepoint Games,M
-VJD008,Ratchet & Clank: Rift Apart,59.99,11,PS5,Plataformas/Acción,2021,Disco,Insomniac Games,E10+
-VJD009,Ghost of Tsushima,49.99,16,PS4,Acción/Aventura,2020,Disco,Sucker Punch,M
-VJD010,Bloodborne,39.99,9,PS4,RPG/Acción,2015,Disco,FromSoftware,M
-VJD011,Uncharted 4,29.99,13,PS4,Acción/Aventura,2016,Disco,Naughty Dog,T
-VJD012,Persona 5 Royal,44.99,10,PS4,RPG,2020,Disco,Atlus,M
-VJD013,Starfield,69.99,22,Xbox Series X,RPG/Ciencia Ficción,2023,Disco,Bethesda,M
-VJD014,Forza Motorsport,69.99,15,Xbox Series X,Carreras,2023,Disco,Turn 10 Studios,E
-VJD015,Halo Infinite,59.99,18,Xbox Series X,FPS,2021,Disco,343 Industries,T
-VJD016,Gears 5,39.99,12,Xbox Series X,Acción/TPS,2019,Disco,The Coalition,M
-VJC001,The Legend of Zelda: Tears of the Kingdom,69.99,25,Switch,Aventura/Acción,2023,Cartucho,Nintendo,E10+
-VJC002,Super Mario Odyssey,59.99,20,Switch,Plataformas,2017,Cartucho,Nintendo,E10+
-VJC003,Animal Crossing: New Horizons,59.99,18,Switch,Simulación,2020,Cartucho,Nintendo,E
-VJC004,Mario Kart 8 Deluxe,59.99,30,Switch,Carreras,2017,Cartucho,Nintendo,E
-VJC005,Pokémon Scarlet,59.99,22,Switch,RPG,2022,Cartucho,Game Freak,E
-VJC006,Pokémon Violet,59.99,20,Switch,RPG,2022,Cartucho,Game Freak,E
-VJC007,Super Smash Bros. Ultimate,59.99,17,Switch,Pelea,2018,Cartucho,Nintendo,E10+
-VJC008,Splatoon 3,59.99,15,Switch,Shooter,2022,Cartucho,Nintendo,E10+
-VJC009,Metroid Dread,59.99,10,Switch,Acción/Aventura,2021,Cartucho,Nintendo,T
-VJC010,Kirby and the Forgotten Land,59.99,12,Switch,Plataformas,2022,Cartucho,Nintendo,E10+
-VJD017,Elden Ring,59.99,20,PC,RPG/Acción,2022,Disco,FromSoftware,M
-VJD018,Baldur's Gate 3,59.99,16,PC,RPG,2023,Disco,Larian Studios,M
-VJD019,Cyberpunk 2077,49.99,14,PC,RPG/Acción,2020,Disco,CD Projekt Red,M
-VJD020,Red Dead Redemption 2,59.99,11,PC,Acción/Aventura,2019,Disco,Rockstar Games,M
-VJD021,The Witcher 3: Wild Hunt,39.99,13,PC,RPG,2015,Disco,CD Projekt Red,M
-VJD022,FIFA 24,69.99,25,PS5,Deportes,2023,Disco,EA Sports,E
-VJD023,NBA 2K24,69.99,18,PS5,Deportes,2023,Disco,2K Sports,E
-VJD024,Call of Duty: Modern Warfare III,69.99,28,PS5,FPS,2023,Disco,Activision,M
-VJD025,Mortal Kombat 1,69.99,15,PS5,Pelea,2023,Disco,NetherRealm,M
-VJD026,Hogwarts Legacy,59.99,20,PS5,RPG/Aventura,2023,Disco,Warner Bros,T
-VJD027,Street Fighter 6,59.99,12,PS5,Pelea,2023,Disco,Capcom,T
-VJD028,Tekken 8,69.99,14,PS5,Pelea,2024,Disco,Bandai Namco,T
+id,nombre,precio,stock,plataforma,genero,año
+VJ001,The Last of Us Part II,59.99,15,PS5,Acción,2020
+VJ002,Elden Ring,49.99,20,PC,RPG,2022
+VJ003,FIFA 24,69.99,10,Xbox,Deportes,2023
+VJ004,Zelda: Tears of Kingdom,59.99,12,Switch,Aventura,2023
+VJ005,Cyberpunk 2077,39.99,8,PS5,RPG,2020
+VJ006,Resident Evil (1996),9.99,5,PS1,Survival Horror,1996
+VJ007,Resident Evil 2,14.99,7,PS1,Survival Horror,1998
+VJ008,Resident Evil 3: Nemesis,14.99,4,PS1,Survival Horror,1999
+VJ009,Resident Evil 4,19.99,12,GameCube,Acción-Aventura,2005
+VJ010,Resident Evil 5,24.99,10,PS3,Acción,2009
+VJ011,Resident Evil 6,24.99,8,PS3,Acción,2012
+VJ012,Resident Evil 7: Biohazard,29.99,15,PS4,Survival Horror,2017
+VJ013,Resident Evil 2 Remake,34.99,18,PS4,Survival Horror,2019
+VJ014,Resident Evil 3 Remake,34.99,11,PS4,Acción,2020
+VJ015,Resident Evil Village,49.99,20,PS5,Survival Horror,2021
+VJ016,Resident Evil 4 Remake,59.99,22,PS5,Acción-Aventura,2023
+VJ017,Gran Turismo 7,69.99,16,PS5,Automovilismo,2022
+VJ018,Forza Motorsport (2023),69.99,14,Xbox,Automovilismo,2023
+VJ019,F1 23,59.99,11,PC,Automovilismo,2023
+VJ020,Assetto Corsa Competizione,39.99,7,PC,Automovilismo,2019
+VJ021,Need for Speed Heat,29.99,9,PS4,Carreras,2019
+VJ022,Gran Turismo Sport,19.99,5,PS4,Automovilismo,2017
+VJ023,Forza Horizon 5,59.99,18,Xbox,Carreras,2021
+VJ024,Mario Kart 8 Deluxe,59.99,25,Switch,Carreras,2017
+VJ025,Counter-Strike 2,0.00,50,PC,Shooter,2023
+VJ026,Dota 2,0.00,45,PC,MOBA,2013
+VJ027,Apex Legends,0.00,40,PC,Battle Royale,2019
+VJ028,Team Fortress 2,0.00,35,PC,Shooter,2007
+VJ029,Grand Theft Auto V,29.99,22,PC,Acción-Aventura,2013
+VJ030,Baldur's Gate 3,59.99,24,PC,RPG,2023
+VJ031,Red Dead Redemption 2,39.99,18,PC,Aventura,2019
+VJ032,The Witcher 3: Wild Hunt,39.99,20,PC,RPG,2015
+VJ033,Call of Duty: Modern Warfare III,69.99,16,PC,Shooter,2023
+VJ034,Starfield,69.99,15,PC,RPG,2023
+VJ035,Hogwarts Legacy,59.99,19,PC,Aventura,2023
+VJ036,Destiny 2,0.00,30,PC,Shooter,2017
+VJ037,ARK: Survival Evolved,49.99,12,PC,Supervivencia,2017
+VJ038,Rust,39.99,14,PC,Supervivencia,2018
+VJ039,Left 4 Dead 2,19.99,10,PC,Shooter,2009
+VJ040,Portal 2,19.99,11,PC,Puzzle,2011
+VJ041,Half-Life 2,9.99,15,PC,Shooter,2004
+VJ042,The Elder Scrolls V: Skyrim,39.99,20,PC,RPG,2011
+VJ043,Fallout 4,29.99,13,PC,RPG,2015
+VJ044,No Man's Sky,59.99,11,PC,Aventura,2016
+VJ045,Rocket League,0.00,25,PC,Deportes,2015
+VJ046,Sea of Thieves,39.99,16,PC,Aventura,2018
+VJ047,Monster Hunter: World,29.99,14,PC,Acción,2018
+VJ048,Warframe,0.00,40,PC,Acción,2013
+VJ049,Path of Exile,0.00,35,PC,RPG,2013
+VJ050,The Sims 4,0.00,30,PC,Simulación,2014
+VJ051,Stardew Valley,14.99,18,PC,Simulación,2016
+VJ052,Terraria,9.99,22,PC,Aventura,2011
+VJ053,Subnautica,29.99,13,PC,Supervivencia,2018
+VJ054,Valheim,19.99,17,PC,Supervivencia,2021
+VJ055,Among Us,4.99,25,PC,Multijugador,2018
+VJ056,Phasmophobia,13.99,15,PC,Terror,2020
+VJ057,God of War (2018),49.99,16,PC,Acción-Aventura,2022
+VJ058,Marvel's Spider-Man Remastered,59.99,14,PC,Acción-Aventura,2022
+VJ059,Hades,24.99,12,PC,Roguelike,2020
+VJ060,Civilization VI,59.99,11,PC,Estrategia,2016
+VJ061,Total War: Warhammer III,59.99,10,PC,Estrategia,2022
+VJ062,Microsoft Flight Simulator,69.99,8,PC,Simulación,2020
+VJ063,Forza Horizon 4,59.99,12,PC,Carreras,2018
+VJ064,Age of Empires IV,59.99,9,PC,Estrategia,2021
+VJ065,Resident Evil: Revelations,19.99,6,PC,Survival Horror,2012
+VJ066,Resident Evil: Revelations 2,24.99,7,PC,Survival Horror,2015
+VJ067,Project CARS 2,29.99,5,PC,Automovilismo,2017
+VJ068,iRacing,9.99,8,PC,Automovilismo,2008
+VJ069,Diablo IV,69.99,18,PC,RPG,2023
+VJ070,Final Fantasy XIV Online,19.99,20,PC,MMORPG,2013
+VJ071,World of Warcraft,14.99,15,PC,MMORPG,2004
+VJ072,Final Fantasy VII Remake Intergrade,69.99,13,PC,RPG,2021
+VJ073,Street Fighter 6,59.99,14,PC,Lucha,2023
+VJ074,Mortal Kombat 1,69.99,16,PC,Lucha,2023
+VJ075,Dead Space Remake,69.99,12,PC,Survival Horror,2023
+VJ076,Alan Wake 2,59.99,11,PC,Survival Horror,2023
+VJ077,The Legend of Zelda: Breath of the Wild,59.99,14,Switch,Aventura,2017
+VJ078,Super Mario Odyssey,59.99,17,Switch,Plataformas,2017
+VJ079,Animal Crossing: New Horizons,54.99,21,Switch,Simulación,2020
+VJ080,Super Smash Bros. Ultimate,59.99,19,Switch,Lucha,2018
+VJ081,Metroid Dread,59.99,13,Switch,Acción-Aventura,2021
+VJ082,Splatoon 3,59.99,15,Switch,Shooter,2022
+VJ083,Pokémon Scarlet,59.99,22,Switch,RPG,2022
+VJ084,Pokémon Violet,59.99,23,Switch,RPG,2022
+VJ085,Luigi's Mansion 3,59.99,16,Switch,Aventura,2019
+VJ086,God of War Ragnarök,69.99,18,PS5,Acción-Aventura,2022
+VJ087,Marvel's Spider-Man 2,69.99,20,PS5,Acción-Aventura,2023
+VJ088,Final Fantasy XVI,69.99,16,PS5,RPG,2023
+VJ089,Horizon Forbidden West,59.99,15,PS5,Acción-Aventura,2022
+VJ090,Ghost of Tsushima Director's Cut,69.99,13,PS5,Acción-Aventura,2021
+VJ091,Returnal,69.99,10,PS5,Shooter,2021
+VJ092,Ratchet & Clank: Rift Apart,69.99,11,PS5,Plataformas,2021
+VJ093,Demon's Souls,69.99,9,PS5,RPG,2020
+VJ094,Minecraft,26.95,35,PC,Sandbox,2011
+VJ095,Fortnite (Edición Física),29.99,12,PS4,Battle Royale,2017
+VJ096,Overwatch 2,0.00,25,PC,Shooter,2022
+VJ097,League of Legends (Gift Card),25.00,40,Tarjeta,MOBA,2009
+VJ098,Valorant (Gift Card),25.00,35,Tarjeta,Shooter,2020
+VJ099,Roblox (Gift Card),25.00,45,Tarjeta,Metaverso,2006
+VJ100,Genshin Impact (Gift Card),30.00,30,Tarjeta,RPG,2020
+VJ101,Undertale,9.99,18,PC,RPG,2015
+VJ102,Cuphead,19.99,14,PC,Run and Gun,2017
+VJ103,Hollow Knight,15.99,16,PC,Metroidvania,2017
+VJ104,Celeste,19.99,12,PC,Plataformas,2018
+VJ105,Dead Cells,24.99,13,PC,Roguelike,2018
+VJ106,Disco Elysium,39.99,10,PC,RPG,2019
+VJ107,Outer Wilds,24.99,11,PC,Aventura,2019
+VJ108,It Takes Two,39.99,15,PC,Aventura,2021
+VJ109,Sekiro: Shadows Die Twice,59.99,12,PC,Acción-Aventura,2019
+VJ110,Dark Souls III,39.99,10,PC,RPG,2016
+VJ111,Bloodborne,19.99,8,PS4,Acción-RPG,2015
+VJ112,Persona 5 Royal,59.99,14,PC,RPG,2022
+VJ113,Metal Gear Solid V: The Phantom Pain,29.99,9,PC,Acción,2015
+VJ114,Bioshock Infinite,29.99,12,PC,Shooter,2013
+VJ115,Mass Effect Legendary Edition,59.99,13,PC,RPG,2021
+VJ116,Death Stranding Director's Cut,49.99,11,PC,Aventura,2021
+VJ117,Control Ultimate Edition,39.99,10,PC,Acción,2020
+VJ118,Doom Eternal,39.99,14,PC,Shooter,2020
+VJ119,Resident Evil: Code Veronica,16.99,4,Dreamcast,Survival Horror,2000
+VJ120,Resident Evil: Operation Raccoon City,19.99,3,PS3,Acción,2012

@@ -1,0 +1,23 @@
+{
+  "CLI0001": {
+    "id_cliente": "CLI0001",
+    "nombre": "Andres",
+    "email": "andres.com",
+    "telefono": "2122221",
+    "historial_compras": []
+  },
+  "CLI0002": {
+    "id_cliente": "CLI0002",
+    "nombre": "",
+    "email": "",
+    "telefono": "",
+    "historial_compras": []
+  },
+  "CLI0003": {
+    "id_cliente": "CLI0003",
+    "nombre": "55",
+    "email": "andres@gmail.com",
+    "telefono": "4444444454956284",
+    "historial_compras": []
+  }
+}

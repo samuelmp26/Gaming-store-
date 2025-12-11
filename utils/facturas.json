@@ -1,0 +1,14 @@
+[
+  {
+    "id_factura": "F00001",
+    "id_cliente": "CLI0001",
+    "fecha": "2025-12-11T13:49:09.378910",
+    "total": 119.98,
+    "items": [
+      {
+        "id_producto": "VJ001",
+        "cantidad": 2
+      }
+    ]
+  }
+]
