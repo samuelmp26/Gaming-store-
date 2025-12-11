@@ -1,241 +1,218 @@
-# Pyrants T-Store
+# Sistema de Gestión de Inventario (Pyrants T-Store
 
-Este repo contiene hasta la fecha, el desarrollo de un proyecto que busca aplicar todos los conceptos de programacion orientada a objetos en python, que consta de una tienda de videojuegos y perifericos relacionados al gaming, todo esto presentado mediante código y aun mas importante una estructuración organizada de todo el sistema de clases que gestiona la tienda. 
-#### Integrantes:
-* Samuel Medina Pulido
-* Miguel Angel Moreno 
-* Sebastian Burtica Velasco 
-## Objetivos
-#### Objetivos general
-* Aplicar de manera integral y didáctica todos los conceptos fundamentales de la Programación Orientada a Objetos (POO) utilizando Python.
-#### Objetivos especificos 
-* Diseñar e implementar un sistema de gestión para una tienda de videojuegos que permita registrar, consultar y administrar productos, clientes y ventas de forma eficiente.
-* Crear una interfaz amigable para el operador que simplifique la aplicacion de el codigo, ya que se requiere para agilizar los procesos al momento de vender.
-## Marco teórico 
-Para dar contexto del proyecto es necesario abordar algunos conceptos importantes en POO. Para empezar ¿Cual es el enfoque de POO? Esta rama de la programacion utiliza objetos para modelar sistemas del mundo real , ademas almacena colecciones de objetos que interactuan entre si, el proposito de POO es la reusabilidad, la mantenibilidad y la escalabilidad del código, agrupando datos (atributos) y el comportamiento (métodos). A forma de resumen los 4 pilares de POO son los siguientes:
-* Abstracción: Se trata de mostrar todo lo importante al usuario, ocultando el codigo base o todos los mecanismos que permiten la operacion del codigo abstraido.
-* Encapsulamiento: Restringe el acceso a los datos que el programador decida , esto con el fin de conservar la privacidad y la integracion de los datos.
-* Herencia: Permite que una clase hija herede los atributos y métodos de la clase madre , esto simplifica y reutiliza el codigo, ya que en la parte de programacion para datos que tienen este tipo de relación se ahorra la escritura de c´digo.
-* Polimorfismo: Este concepto nos dice que un objeto puede tener muchas formas , es decir , dependiendo de quien lo invoca se comporta de manera diferente, con ello simplifica el entendimiento y la extension del codigo ya que se pueden tratar objetos de difrentes clases de manera uniforme.
-## Justificacion
-Más allá de enfocarse en la tienda de videojuegos y destinar todo el proposito a la creación como tal , el proyecto busca utilizar de forma muy aplicada todos los conceptos aprendidos de la programacion orientada a objetos de forma dinámica. Al estar buscando alternativas que cumplieran este propósito , hemos seleccionado deliberadamente el contexto del comercio electrónico de gaming porque sus características inherentes—la diversidad de productos (juegos, consolas, periféricos), la complejidad de las interacciones (clientes, carritos, pedidos) y la necesidad de clasificación detallada (géneros, plataformas, especificaciones)—ofrecen el escenario perfecto para aplicar de forma dinámica los 4 pilares de POO , tales como herencia, polimorfismo , abstraccion y encapsulamiento. 
+Sistema de inventario desarrollado en Java para gestionar productos, registrar movimientos de entrada/salida y generar reportes. Utiliza programación orientada a objetos y persistencia de datos mediante archivos.
 
-## ¿ Como se aborda el problema?
-Para abordar el "problema" o el diseño estructurado del codigo,se opta, primero pot crear un diagrama de clases que describe el sistema de relación entre clases. Para que el diagrama sea mas entendible se explica a continuación por partes. 
- ````mermaid
-classDiagram
-direction TB
- class Inventario {
-	    - dict~str, Producto~ productos
-	    - list~RegistroMovimiento~ movimientos
-	    + agregar_producto(producto)
-	    + registrar_entrada(codigo, cantidad)
-	    + registrar_salida(codigo, cantidad)
-	    + listar_inventario()
-	    + buscar_producto(codigo)
-	    + valor_total()
-	    + guardar_datos()
-	    + cargar_datos()
-    }
- class RegistroMovimiento {
-	    - str id_movimiento
-	    - str tipo
-	    - str codigo_producto
-	    - int cantidad
-	    - float precio_unitario
-	    - datetime fecha
-	    + to_dict()
-	    + __str__()
-    }
- class Persistencia {
-	    - str ruta_inventario
-	    - str ruta_movimientos
-	    + guardar_inventario(inventario)
-	    + cargar_inventario()
-	    + guardar_registros(registros)
-	    + cargar_registros()
-    }
- class Reporte {
-	    - Inventario inventario
-	    - datetime fecha_generacion
-	    + generar_txt(ruta)
-	    + generar_csv(ruta)
-	    + generar_resumen()
-    }
+## Características Principales
 
- class CargaMasiva {
-	    - str ruta_archivo
-	    + importar_csv(inventario)
-	    + importar_json(inventario)
-    }
+- **Gestión de Productos**: Crear y administrar productos con múltiples atributos (código, nombre, precio, categoría, stock mínimo)
+- **Registro de Movimientos**: Control de entradas y salidas con fecha, hora y usuario
+- **Inventario en Tiempo Real**: Consulta del estado actual del inventario
+- **Carga Masiva**: Importación de productos desde archivos CSV
+- **Persistencia de Datos**: Almacenamiento automático en archivos locales
+- **Generación de Reportes**: Exportación de inventario y movimientos en formato TXT
 
- class InterfazConsola {
-	    - Inventario inventario
-	    + mostrar_menu()
-	    + ejecutar_opcion(opcion)
- }
- class Negociante {
-	    - float margen_ganancia
-	    - dict reglas_demanda
-	    + ofrecer_precio_compra(producto)
-	    + ofrecer_precio_venta(producto)
-	    + simular_negociacion(producto, tipo)
-    }
-    class cliente{
-       - str nombre 
-       - str id 
-       - str telefono 
-       - str correo 
-       - str fecha_de_registro
-       - list() historial_de_compras
+## Estructura del Proyecto
 
-       + comprar()
-       + vender()
-    }
+```
+src/
+├── models/
+│   ├── Producto.java          # Clase para representar productos
+│   ├── Movimiento.java         # Clase para registrar movimientos
+│   └── InventarioItem.java     # Clase que vincula producto con cantidad
+├── services/
+│   └── SistemaInventario.java  # Lógica principal del sistema
+└── ui/
+    └── MenuPrincipal.java      # Interfaz de consola
+```
 
-    Inventario "1" *-- "*" RegistroMovimiento : registra >
-    Inventario --> Persistencia : usa >
-    Inventario --> Negociante : usa >
-    Reporte --> Inventario : obtiene datos de >
-    CargaMasiva --> Inventario : importa productos a >
-    InterfazConsola --> Inventario : manipula >
-    RegistroMovimiento -- Negociante
+## Diagrama de Clases
 
-
-````
-Cabe resaltar que el diagrama de clases anterior corresponde a un planteamiento de resolución del proyecto , las clases serian las necesarias para el flujo del sistema,
-* La clase principal es inventario (nucleo del sistema)  que gestiona los productos y los movimientos, y está rodeada de clases que manejan la persistencia, la interfaz, los reportes y la lógica de negocio.
-*  La clase registro movimiento actúa como un objeto de datos (Data Object) que registra cada transacción (entrada o salida de stock). Almacena detalles cruciales como la cantidad, el precio unitario y la fecha.
-*  La clase persistencia su única tarea es saber cómo guardar el estado actual del Inventario y sus Movimientos en almacenamiento permanente (disco duro) y luego cargarlos de vuelta.
-*  La clase reporte necesita acceder a los datos del Inventario para crear resúmenes, y exportar esa información en formatos estructurados.
-*  Carga Masiva encargada de procesar datos externos (como archivos CSV o JSON) e integrarlos al inventario.
-*  La interfaz de consola permite la interacción entre el programa y el usuario de una forma comprenmsible e amigable.
-* La clase negociante contiene la lógica económica del negocio. Determina los precios de compra y venta basándose en reglas (margen_ganancia, reglas_demanda)
-
-
-
-Aqui se presenta la relación entre inventario y producto 
-
-````mermaid
-classDiagram
-direction TB
-class Producto {
-	    - str codigo
-	    - str nombre
-	    - str categoria
-	    - float precio
-	    - int cantidad
-	    - datetime fecha_ingreso
-	    + actualizar_cantidad(cantidad)
-	    + actualizar_precio(precio)
-	    + to_dict()
-	    + from_dict(data)
-	    + __str__()
-    }
-
-    class JuegoDisco {
-    }
-
-    class JuegoCartucho {
-    }
-
-    class Consola {
-    }
-
-    class Control {
-    }
-
-    class AccesorioControl {
-    }
-
-    class Auricular {
-    }
-
-    class Microfono {
-    }
-
-    class Monitor {
-    }
-
-    class Cable {
-    }
-
-    class Manubrio {
-    }
-
-    class LentesVR {
-    }
-
-    class Mouse {
-    }
-
-    class Teclado {
-    }
-
-    class SillaGamer {
-    }
-
-    class TarjetaRegalo {
-    }
-
-    class Camara {
-    }
-
-    class BaseConsola {
-    }
-
-    class MemoriaExterna {
-    }
-
-    class LuzAmbiental {
-    }
-
-    class CapturadoraVideo {
-    }
-
-
-
-   Producto <|-- JuegoDisco
-    Producto <|-- JuegoCartucho
-    Producto <|-- Consola
-    Producto <|-- Control
-    Producto <|-- AccesorioControl
-    Producto <|-- Auricular
-    Producto <|-- Microfono
-    Producto <|-- Monitor
-    Producto <|-- Cable
-    Producto <|-- Manubrio
-    Producto <|-- LentesVR
-    Producto <|-- Mouse
-    Producto <|-- Teclado
-    Producto <|-- SillaGamer
-    Producto <|-- TarjetaRegalo
-    Producto <|-- Camara
-    Producto <|-- BaseConsola
-    Producto <|-- MemoriaExterna
-    Producto <|-- LuzAmbiental
-    Producto <|-- CapturadoraVideo
-
-````
-Como se puede observar hay muchos tipos de productos , ya que cada producto tiene atributos distintos , pero que hereden de la clase madre que es producto, en su momoento se defeniran con atributos de instancia. 
-
-
-Cabe resaltar que para codigo futuro mucho mas realizado , se plantea el manejo de una clase madre que maneje excepciones pata todo el código, estas excepciones son las sugeridas en general.
 ```mermaid
 classDiagram
-direction TB
+    class Producto {
+        -String codigo
+        -String nombre
+        -double precio
+        -String categoria
+        -int stockMinimo
+        +Producto(codigo, nombre, precio, categoria, stockMinimo)
+        +getCodigo() String
+        +getPrecio() double
+    }
 
-    Excepciones <|-- ProductoNoEncontradoError
-    Excepciones <|-- StockInsuficienteError
-    Excepciones <|-- CodigoDuplicadoError
-    Excepciones <|-- ArchivoInvalidoError
+    class Movimiento {
+        -String codigo
+        -String tipoMovimiento
+        -int cantidad
+        -LocalDateTime fecha
+        -String usuario
+        +Movimiento(codigo, tipoMovimiento, cantidad, fecha, usuario)
+    }
 
+    class InventarioItem {
+        -Producto producto
+        -int cantidad
+        +agregarStock(int)
+        +retirarStock(int) boolean
+    }
 
-````
+    class SistemaInventario {
+        -Map~String, InventarioItem~ inventario
+        -List~Movimiento~ historialMovimientos
+        +agregarProducto(Producto, int)
+        +registrarEntrada(String, int, String)
+        +registrarSalida(String, int, String)
+        +obtenerInventario() List
+        +cargarProductosDesdeCSV(String)
+        +generarReporteInventario(String)
+    }
 
+    SistemaInventario -- InventarioItem
+    SistemaInventario -- Movimiento
+    InventarioItem -- Producto
+```
 
+## Requisitos
 
- 
-## Ejecucion del programa...
+- Java 8 o superior
+- No requiere dependencias externas
 
+## Instalación y Ejecución
 
+### Compilar el proyecto
+```bash
+javac -d bin src/**/*.java
+```
+
+### Ejecutar el programa
+```bash
+java -cp bin ui.MenuPrincipal
+```
+
+## Uso del Sistema
+
+### Menú Principal
+
+Al iniciar el programa, se presenta el siguiente menú:
+
+```
+=== SISTEMA DE GESTIÓN DE INVENTARIO ===
+1. Agregar nuevo producto
+2. Registrar entrada
+3. Registrar salida
+4. Ver inventario completo
+5. Buscar producto
+6. Cargar productos desde CSV
+7. Generar reportes
+8. Salir
+```
+
+### Operaciones Principales
+
+#### 1. Agregar Producto
+Permite crear un nuevo producto ingresando:
+- Código único
+- Nombre
+- Precio
+- Categoría
+- Stock mínimo
+- Cantidad inicial
+
+#### 2. Registrar Entrada
+Registra el ingreso de unidades a un producto existente:
+- Código del producto
+- Cantidad a ingresar
+- Usuario que realiza la operación
+
+#### 3. Registrar Salida
+Registra la salida de unidades de un producto:
+- Código del producto
+- Cantidad a retirar
+- Usuario que realiza la operación
+- Validación de stock disponible
+
+#### 4. Ver Inventario
+Muestra el listado completo de productos con:
+- Información del producto
+- Cantidad disponible
+- Alertas de stock bajo
+
+#### 5. Buscar Producto
+Búsqueda específica por código de producto
+
+#### 6. Carga Masiva desde CSV
+Importa múltiples productos desde un archivo CSV con formato:
+```
+codigo,nombre,precio,categoria,stock_minimo,cantidad
+```
+
+Ejemplo:
+```csv
+P001,Laptop Dell,1200.50,Electrónica,5,10
+P002,Mouse Logitech,25.99,Accesorios,20,50
+```
+
+#### 7. Generar Reportes
+- **Reporte de Inventario**: Estado actual de todos los productos
+- **Reporte de Movimientos**: Historial filtrado por rango de fechas
+
+## Persistencia de Datos
+
+El sistema guarda automáticamente la información en:
+- `productos.dat`: Productos e inventario actual
+- `movimientos.dat`: Historial completo de movimientos
+
+Los datos se cargan automáticamente al iniciar el programa.
+
+## Conceptos de POO Aplicados
+
+- **Encapsulamiento**: Atributos privados con getters/setters
+- **Composición**: InventarioItem compuesto por Producto
+- **Colecciones**: Uso de Map y List para gestionar datos
+- **Manejo de fechas**: LocalDateTime para timestamps
+- **Manejo de archivos**: I/O para persistencia y reportes
+- **Manejo de excepciones**: Try-catch para operaciones críticas
+
+## Validaciones Implementadas
+
+- ✓ Código de producto único
+- ✓ Precios positivos
+- ✓ Cantidades válidas (≥ 0)
+- ✓ Stock suficiente para salidas
+- ✓ Formato correcto en CSV
+- ✓ Existencia de producto antes de operaciones
+
+## Formato de Reportes
+
+Los reportes se generan en formato texto plano (.txt) con estructura tabular legible.
+
+### Ejemplo Reporte de Inventario
+```
+========================================
+   REPORTE DE INVENTARIO
+========================================
+Fecha: 2024-12-11 14:30:00
+
+Código    Nombre         Precio    Stock
+---------------------------------------
+P001      Laptop Dell    1200.50   10
+P002      Mouse          25.99     50
+...
+```
+
+## Autores
+
+[Tu Nombre] - [Tu Correo/GitHub]  
+[Compañero 1] - [Correo/GitHub]
+
+## Notas de Desarrollo
+
+- Desarrollado como proyecto académico
+- Implementa conceptos de Programación Orientada a Objetos
+- Sistema de consola interactivo
+- Manejo completo de archivos (lectura/escritura)
+
+---
+
+**Curso**: [Nombre del Curso]  
+**Fecha**: Diciembre 2024
