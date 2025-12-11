@@ -19,5 +19,12 @@
     "email": "andres@gmail.com",
     "telefono": "4444444454956284",
     "historial_compras": []
+  },
+  "CLI0004": {
+    "id_cliente": "CLI0004",
+    "nombre": "carlos",
+    "email": "carlos@gmail.com",
+    "telefono": "5555555",
+    "historial_compras": []
   }
 }

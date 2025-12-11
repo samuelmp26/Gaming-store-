@@ -18,6 +18,7 @@ except ImportError:
 class SistemaGestionTienda:
     """Sistema principal de gestión de la tienda"""
     
+    DESCUENTO_RESIDENT_EVIL = 0.15
     def __init__(self):
         self.productos: List[IMPproductos.Producto] = []
         self.clientes: Dict[str, IMPcliente.Cliente] = {}
@@ -26,6 +27,23 @@ class SistemaGestionTienda:
         self.contador_clientes = 1
         self.cargar_productos_csv()
         self.cargar_datos_persistentes()
+
+
+    def es_producto_resident_evil(self, producto: IMPproductos.Producto) -> bool:
+        """Verifica si un producto es de Resident Evil"""
+        nombre_lower = producto.nombre.lower()
+        keywords = ['resident evil', 'umbrella', 'stars', 'leon', 'jill', 'chris', 
+                   'claire', 'ada wong', 'wesker', 'ethan', 'dimitrescu', 'nemesis']
+        return any(keyword in nombre_lower for keyword in keywords)
+    
+
+    def obtener_precio_con_descuento(self, producto: IMPproductos.Producto) -> tuple:
+        """Retorna (precio_final, descuento_aplicado, tiene_descuento)"""
+        if self.es_producto_resident_evil(producto):
+            descuento = producto.precio * self.DESCUENTO_RESIDENT_EVIL
+            precio_final = producto.precio - descuento
+            return (precio_final, descuento, True)
+        return (producto.precio, 0.0, False)
     
     def cargar_datos_persistentes(self):
         """Carga clientes y facturas desde archivos JSON"""
@@ -157,6 +175,10 @@ class SistemaGestionTienda:
                     self.productos.append(pg)
             
             print("Productos cargados exitosamente")
+
+            productos_re = sum(1 for p in self.productos if self.es_producto_resident_evil(p))
+            if productos_re > 0:
+                print(f" {productos_re} productos con descuento Resident Evil ({self.DESCUENTO_RESIDENT_EVIL*100:.0f}%)")
         except FileNotFoundError:
             print("Archivos CSV no encontrados. Creando archivos de ejemplo...")
             self.crear_csv_ejemplo()
@@ -207,7 +229,12 @@ class SistemaGestionTienda:
         print("-"*100)
         for p in self.productos:
             if isinstance(p, IMPproductos.Videojuego):
-                print(f"{p.id_producto:<8} {p.nombre:<35} ${p.precio:<11.2f} {p.plataforma:<12} {p.stock:<8}")
+                precio_final, descuento, tiene_desc = self.obtener_precio_con_descuento(p)
+                if tiene_desc:
+                    precio_str = f"${precio_final:.2f} "
+                else:
+                    precio_str = f"${p.precio:.2f}"
+                print(f"{p.id_producto:<8} {p.nombre:<40} {precio_str:<15} {p.plataforma:<12} {p.stock:<8}")
         
         print("\n--- PRODUCTOS GAMING ---")
         print(f"{'ID':<8} {'Nombre':<35} {'Precio':<12} {'Tipo':<12} {'Stock':<8}")
@@ -323,7 +350,7 @@ class SistemaGestionTienda:
         # Seleccionar o registrar cliente con interfaz mejorada
         cliente = self.seleccionar_cliente()
         if not cliente:
-            print("✗ Operación cancelada")
+            print(" Operación cancelada")
             return
         
         # Crear factura
@@ -373,18 +400,39 @@ class SistemaGestionTienda:
                     print("Tip: Use 'catalogo' para ver todos los productos o 'buscar:nombre' para buscar")
                     continue
             
-            print(f"\nProducto seleccionado: {producto.nombre} - ${producto.precio:.2f}")
-            print(f"Stock disponible: {producto.stock}")
+        
+        precio_final, descuento, tiene_desc = self.obtener_precio_con_descuento(producto)
+        print(f"\nProducto seleccionado: {producto.nombre}")
+        if tiene_desc:
+            print(f"Precio original: ${producto.precio:.2f}")
+            print(f"Precio con descuento RE (15%): ${precio_final:.2f}")
+            print(f"Ahorro: ${descuento:.2f}")
+        else:
+            print(f"Precio: ${producto.precio:.2f}")
+        print(f"Stock disponible: {producto.stock}")
+        
+        try:
+            cantidad = int(input("Cantidad: "))
             
-            try:
-                cantidad = int(input("Cantidad: "))
-                if factura.agregar_item(producto, cantidad):
-                    print("Producto agregado a la factura")
+            # Aplicar descuento si corresponde
+            if tiene_desc:
+                producto_temp = type(producto).__new__(type(producto))
+                producto_temp.__dict__.update(producto.__dict__)
+                producto_temp.precio = precio_final
+                
+                if factura.agregar_item(producto_temp, cantidad):
+                    print(f" Producto agregado con descuento RE (Ahorro: ${descuento * cantidad:.2f})")
                 else:
                     print("Stock insuficiente")
-            except ValueError:
-                print("Cantidad inválida")
-        
+            else:
+                if factura.agregar_item(producto, cantidad):
+                    print(" Producto agregado a la factura")
+                else:
+                    print("Stock insuficiente")
+        except ValueError:
+            print("Cantidad inválida")
+
+
         if factura.items:
             self.facturas.append(factura)
             # Guardar automáticamente
