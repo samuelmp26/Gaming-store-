@@ -475,7 +475,9 @@ Detecta automáticamente productos de la franquicia y aplica descuento.
 
 ## Autores
 Samuel Andres Medina Pulido
+
 Miguel Angel Moreno Alvarez
+
 Sebastian Buritica Velasco 
 
 **Equipo Pyrants T-Store**  
