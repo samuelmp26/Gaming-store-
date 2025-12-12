@@ -1,102 +1,233 @@
-# Sistema de Gestión de Inventario (Pyrants T-Store
+# Sistema de Gestión de Tienda de Videojuegos - Pyrants T-Store
 
-Sistema de inventario desarrollado en Java para gestionar productos, registrar movimientos de entrada/salida y generar reportes. Utiliza programación orientada a objetos y persistencia de datos mediante archivos.
+Sistema completo de gestión para tienda de videojuegos desarrollado en Python. Maneja inventario, clientes, ventas, facturación y evaluación de productos usados, con persistencia de datos y exportación a múltiples formatos.
 
 ## Características Principales
 
-- **Gestión de Productos**: Crear y administrar productos con múltiples atributos (código, nombre, precio, categoría, stock mínimo)
-- **Registro de Movimientos**: Control de entradas y salidas con fecha, hora y usuario
-- **Inventario en Tiempo Real**: Consulta del estado actual del inventario
-- **Carga Masiva**: Importación de productos desde archivos CSV
-- **Persistencia de Datos**: Almacenamiento automático en archivos locales
-- **Generación de Reportes**: Exportación de inventario y movimientos en formato TXT
+- **Gestión de Inventario**: Catálogo completo de videojuegos y productos gaming con precios dinámicos
+- **Sistema de Descuentos**: Descuento automático del 15% en productos de Resident Evil
+- **Gestión de Clientes**: Registro y búsqueda avanzada de clientes con historial de compras
+- **Facturación Completa**: Creación de facturas con múltiples formatos de exportación (TXT, Excel)
+- **Evaluación de Usados**: Sistema avanzado para valorar productos usados considerando depreciación, condición y defectos
+- **Persistencia de Datos**: Almacenamiento automático en JSON para clientes y facturas
+- **Carga desde CSV**: Importación masiva de productos desde archivos
+- **Exportación a Excel**: Reportes individuales y consolidados con formato profesional
 
 ## Estructura del Proyecto
 
 ```
-src/
-├── models/
-│   ├── Producto.java          # Clase para representar productos
-│   ├── Movimiento.java         # Clase para registrar movimientos
-│   └── InventarioItem.java     # Clase que vincula producto con cantidad
-├── services/
-│   └── SistemaInventario.java  # Lógica principal del sistema
-└── ui/
-    └── MenuPrincipal.java      # Interfaz de consola
+Inventario/
+├── __init__.py
+├── productos.py           # Clases de productos (Producto, Videojuego, ProductoGaming)
+├── cliente.py            # Gestión de clientes
+├── factura.py            # Sistema de facturación (Factura, ItemFactura)
+├── venta.py              # Evaluación de productos usados
+└── sistemagestion.py     # Lógica principal del sistema
+
+utils/
+├── videojuegos.csv       # Catálogo de videojuegos (120+ productos)
+├── productos_gaming.csv  # Productos gaming (45+ items)
+├── clientes.json         # Base de datos de clientes
+└── facturas.json         # Historial de facturas
+
+facturas/                 # Directorio de exportación
+main.py                   # Punto de entrada del sistema
 ```
 
-## Diagrama de Clases
+## Diagrama de Clases Completo
 
 ```mermaid
 classDiagram
     class Producto {
-        -String codigo
+        -String id_producto
         -String nombre
-        -double precio
         -String categoria
-        -int stockMinimo
-        +Producto(codigo, nombre, precio, categoria, stockMinimo)
-        +getCodigo() String
-        +getPrecio() double
+        -float precio
+        -int stock
+        +__init__(id, nombre, categoria, precio, stock)
+        +__str__() String
     }
 
-    class Movimiento {
-        -String codigo
-        -String tipoMovimiento
-        -int cantidad
-        -LocalDateTime fecha
-        -String usuario
-        +Movimiento(codigo, tipoMovimiento, cantidad, fecha, usuario)
+    class Videojuego {
+        -String plataforma
+        -String genero
+        -int año
+        +__init__(id, nombre, precio, stock, plataforma, genero, año)
+        +__str__() String
     }
 
-    class InventarioItem {
+    class ProductoGaming {
+        -String tipo
+        -String marca
+        +__init__(id, nombre, precio, stock, tipo, marca)
+        +__str__() String
+    }
+
+    class Cliente {
+        -String id_cliente
+        -String nombre
+        -String email
+        -String telefono
+        -List historial_compras
+        +__init__(id, nombre, email, telefono)
+        +__str__() String
+    }
+
+    class ItemFactura {
         -Producto producto
         -int cantidad
-        +agregarStock(int)
-        +retirarStock(int) boolean
+        -float subtotal
+        +__init__(producto, cantidad)
+        +__str__() String
     }
 
-    class SistemaInventario {
-        -Map~String, InventarioItem~ inventario
-        -List~Movimiento~ historialMovimientos
-        +agregarProducto(Producto, int)
-        +registrarEntrada(String, int, String)
-        +registrarSalida(String, int, String)
-        +obtenerInventario() List
-        +cargarProductosDesdeCSV(String)
-        +generarReporteInventario(String)
+    class Factura {
+        -String id_factura
+        -Cliente cliente
+        -List~ItemFactura~ items
+        -datetime fecha
+        -float total
+        +__init__(id_factura, cliente)
+        +agregar_item(producto, cantidad) bool
+        +calcular_total() void
+        +generar_resumen() String
     }
 
-    SistemaInventario -- InventarioItem
-    SistemaInventario -- Movimiento
-    InventarioItem -- Producto
+    class TipoProducto {
+        <<enumeration>>
+        VIDEOJUEGO
+        CONSOLA
+        CONTROL
+        AURICULARES
+        TECLADO
+        MOUSE
+        MONITOR
+        SILLA
+        ACCESORIO
+        OTRO
+    }
+
+    class CondicionFisica {
+        <<enumeration>>
+        COMO_NUEVO
+        EXCELENTE
+        BUENO
+        REGULAR
+        MALO
+        -String descripcion
+        -float factor
+    }
+
+    class CondicionFuncional {
+        <<enumeration>>
+        PERFECTO
+        FUNCIONAL
+        PROBLEMAS_MENORES
+        PROBLEMAS_GRAVES
+        NO_FUNCIONA
+        -String descripcion
+        -float factor
+    }
+
+    class DepreciacionProducto {
+        +Dict DEPRECIACION_ANUAL
+        +calcular(tipo, meses_uso)$ float
+    }
+
+    class DefectosComunes {
+        +Dict DEFECTOS
+        +seleccionar_defectos()$ List~tuple~
+    }
+
+    class EvaluadorProducto {
+        -String producto_nombre
+        -float precio_nuevo
+        -TipoProducto tipo_producto
+        -int meses_uso
+        -CondicionFisica condicion_fisica
+        -CondicionFuncional condicion_funcional
+        -List~tuple~ defectos
+        -float precio_estimado
+        -float precio_minimo_compra
+        -float precio_maximo_compra
+        +iniciar_evaluacion() void
+        -_obtener_info_basica() void
+        -_evaluar_condicion() void
+        -_revisar_defectos() void
+        -_calcular_precios() void
+        -_mostrar_resumen() void
+        -_iniciar_negociacion() void
+    }
+
+    class SistemaGestionTienda {
+        -List~Producto~ productos
+        -Dict~String,Cliente~ clientes
+        -List~Factura~ facturas
+        -int contador_facturas
+        -int contador_clientes
+        +float DESCUENTO_RESIDENT_EVIL
+        +cargar_productos_csv() void
+        +cargar_datos_persistentes() void
+        +guardar_datos_persistentes() void
+        +es_producto_resident_evil(producto) bool
+        +obtener_precio_con_descuento(producto) tuple
+        +mostrar_catalogo() void
+        +mostrar_catalogo_compacto() void
+        +buscar_producto(id) Producto
+        +buscar_producto_por_nombre(nombre) List~Producto~
+        +registrar_cliente() Cliente
+        +buscar_cliente_por_nombre(nombre) List~Cliente~
+        +seleccionar_cliente() Cliente
+        +crear_factura() void
+        +exportar_factura(id_factura) void
+        +exportar_factura_excel(id_factura) void
+        +exportar_todas_facturas_excel() void
+        +agregar_producto_inventario() void
+        +evaluar_compra_usado() void
+        +menu_principal() void
+    }
+
+    Producto <|-- Videojuego
+    Producto <|-- ProductoGaming
+    Factura *-- ItemFactura
+    ItemFactura --> Producto
+    Factura --> Cliente
+    SistemaGestionTienda --> Producto
+    SistemaGestionTienda --> Cliente
+    SistemaGestionTienda --> Factura
+    SistemaGestionTienda --> EvaluadorProducto
+    EvaluadorProducto --> TipoProducto
+    EvaluadorProducto --> CondicionFisica
+    EvaluadorProducto --> CondicionFuncional
+    EvaluadorProducto ..> DepreciacionProducto
+    EvaluadorProducto ..> DefectosComunes
 ```
 
 ## Requisitos
 
-- Java 8 o superior
-- No requiere dependencias externas
+- Python 3.8 o superior
+- openpyxl (opcional, para exportación a Excel): `pip install openpyxl`
 
 ## Instalación y Ejecución
 
-### Compilar el proyecto
+### Ejecutar el sistema
 ```bash
-javac -d bin src/**/*.java
+python main.py
 ```
 
-### Ejecutar el programa
+### Instalar dependencia opcional para Excel
 ```bash
-java -cp bin ui.MenuPrincipal
+pip install openpyxl
 ```
 
 ## Uso del Sistema
 
 ### Menú Principal
 
-Al iniciar el programa, se presenta el siguiente menú:
-
 ```
-=== SISTEMA DE GESTIÓN DE INVENTARIO ===
+================================================================================
+                    SISTEMA DE GESTIÓN - TIENDA DE VIDEOJUEGOS
+================================================================================
 1. Ver catálogo de productos
 2. Registrar cliente
 3. Crear factura
@@ -110,113 +241,249 @@ Al iniciar el programa, se presenta el siguiente menú:
 11. Salir
 ```
 
-### Operaciones Principales
+### Funcionalidades Detalladas
 
-#### 1. Agregar Producto
-Permite crear un nuevo producto ingresando:
-- Código único
-- Nombre
-- Precio
-- Categoría
-- Stock mínimo
-- Cantidad inicial
+#### 1. Catálogo de Productos
+- **120+ videojuegos** de múltiples plataformas (PS1-PS5, Xbox, PC, Switch)
+- **45+ productos gaming** (controles, periféricos, accesorios, cosplay)
+- Descuento automático del 15% en productos de Resident Evil
+- Visualización compacta con precios con descuento marcados
 
-#### 2. Registrar Entrada
-Registra el ingreso de unidades a un producto existente:
-- Código del producto
-- Cantidad a ingresar
-- Usuario que realiza la operación
+#### 2. Gestión de Clientes
+**Búsqueda avanzada:**
+- Por ID directo: `CLI0001`
+- Por nombre: `buscar:carlos`
+- Ver lista completa: `lista`
 
-#### 3. Registrar Salida
-Registra la salida de unidades de un producto:
-- Código del producto
-- Cantidad a retirar
-- Usuario que realiza la operación
-- Validación de stock disponible
+**Validaciones:**
+- Email con formato válido
+- Teléfono numérico de mínimo 7 dígitos
+- Nombre no vacío
 
-#### 4. Ver Inventario
-Muestra el listado completo de productos con:
-- Información del producto
-- Cantidad disponible
-- Alertas de stock bajo
+#### 3. Sistema de Facturación
+**Crear factura:**
+1. Seleccionar o registrar cliente
+2. Agregar productos (búsqueda por ID o nombre)
+3. Especificar cantidades
+4. Sistema aplica descuentos automáticamente
+5. Valida stock disponible
+6. Genera resumen con total
 
-#### 5. Buscar Producto
-Búsqueda específica por código de producto
-
-#### 6. Carga Masiva desde CSV
-Importa múltiples productos desde un archivo CSV con formato:
+**Ejemplo de factura:**
 ```
-codigo,nombre,precio,categoria,stock_minimo,cantidad
+============================================================
+FACTURA #F00001
+Fecha: 2025-12-11 13:49:09
+Cliente: Andres
+============================================================
+
+Resident Evil 4 Remake x2 - $101.98
+(Ahorro por descuento RE: $18.00)
+
+============================================================
+TOTAL: $101.98
+============================================================
 ```
 
-Ejemplo:
-```csv
-P001,Laptop Dell,1200.50,Electrónica,5,10
-P002,Mouse Logitech,25.99,Accesorios,20,50
+#### 4-6. Exportación de Facturas
+**TXT:** Formato simple para impresión o email
+**Excel Individual:** Factura profesional con estilos y formato
+**Excel Consolidado:** 
+- Hoja "Resumen" con todas las facturas
+- Hojas individuales por cada factura
+- Total general automático
+
+#### 8. Evaluación de Productos Usados
+
+Sistema completo de valoración considerando:
+
+**Factores de Depreciación por Tiempo:**
+- Videojuegos: -35% anual
+- Consolas: -20% anual
+- Controles: -25% anual
+- Periféricos: -20-30% anual
+
+**Condición Física:**
+- Como Nuevo (95%)
+- Excelente (85%)
+- Bueno (70%)
+- Regular (50%)
+- Malo (30%)
+
+**Condición Funcional:**
+- Funciona Perfectamente (100%)
+- Funcional con detalles menores (85%)
+- Problemas menores (60%)
+- Problemas graves (30%)
+- No funciona (5%)
+
+**Defectos Específicos:**
+- 20+ tipos de defectos catalogados
+- Impacto individual del 3% al 30%
+- Desde rasguños hasta partes rotas
+
+**Proceso de Evaluación:**
+1. Ingreso de información básica del producto
+2. Selección de condiciones física y funcional
+3. Checklist interactivo de defectos
+4. Cálculo automático de valor de mercado
+5. Rango de compra recomendado (40%-60% del valor)
+6. Simulador de negociación
+7. Análisis de rentabilidad
+
+**Ejemplo de resultado:**
 ```
+============================================================
+ Producto: Control Xbox Series X
+ Precio nuevo: $59.99
+ Tiempo de uso: 18 meses (1 años)
 
-#### 7. Generar Reportes
-- **Reporte de Inventario**: Estado actual de todos los productos
-- **Reporte de Movimientos**: Historial filtrado por rango de fechas
+ CONDICIÓN:
+  • Física: Bueno
+  • Funcional: Funcional con detalles menores
 
-## Persistencia de Datos
+ ⚠ DEFECTOS ENCONTRADOS:
+  • Botones desgastados: -10%
+  • Sin caja original: -10%
 
-El sistema guarda automáticamente la información en:
-- `productos.dat`: Productos e inventario actual
-- `movimientos.dat`: Historial completo de movimientos
+------------------------------------------------------------
+ VALOR ESTIMADO DE MERCADO: $28.79
+------------------------------------------------------------
 
-Los datos se cargan automáticamente al iniciar el programa.
+ RANGO DE COMPRA RECOMENDADO:
+  • Mínimo a ofrecer: $11.52
+  • Máximo a pagar:   $17.27
+============================================================
+```
 
 ## Conceptos de POO Aplicados
 
-- **Encapsulamiento**: Atributos privados con getters/setters
-- **Composición**: InventarioItem compuesto por Producto
-- **Colecciones**: Uso de Map y List para gestionar datos
-- **Manejo de fechas**: LocalDateTime para timestamps
-- **Manejo de archivos**: I/O para persistencia y reportes
-- **Manejo de excepciones**: Try-catch para operaciones críticas
+### Herencia
+- `Videojuego` y `ProductoGaming` heredan de `Producto`
+- Especialización de atributos según tipo de producto
+
+### Encapsulamiento
+- Atributos privados con acceso controlado
+- Métodos internos prefijados con `_` para evaluación
+
+### Composición
+- `Factura` compuesta por múltiples `ItemFactura`
+- `ItemFactura` contiene referencia a `Producto`
+- `SistemaGestionTienda` orquesta todas las clases
+
+### Enumeraciones
+- `TipoProducto`: Categorización de productos
+- `CondicionFisica` y `CondicionFuncional`: Estados con factores numéricos
+- Valores asociados (descripción, factor de depreciación)
+
+### Clases Estáticas
+- `DepreciacionProducto`: Cálculos de depreciación
+- `DefectosComunes`: Catálogo de defectos y selección interactiva
+
+### Separación de Responsabilidades
+- **productos.py**: Modelos de datos de productos
+- **cliente.py**: Modelo de cliente
+- **factura.py**: Lógica de facturación
+- **venta.py**: Sistema completo de evaluación de usados
+- **sistemagestion.py**: Controlador principal y persistencia
+
+## Persistencia de Datos
+
+### JSON (Automática)
+- `clientes.json`: Base de datos de clientes con historial
+- `facturas.json`: Registro completo de ventas
+- Carga automática al iniciar
+- Guardado tras cada operación crítica
+
+### CSV (Importación)
+- `videojuegos.csv`: 120 videojuegos con atributos específicos
+- `productos_gaming.csv`: 45 productos con tipo y marca
+
+### Exportación TXT
+- Facturas individuales en formato texto
+- Ubicación: `facturas/factura_F00001.txt`
+
+### Exportación Excel
+- Estilos profesionales con openpyxl
+- Colores corporativos
+- Formato de moneda
+- Bordes y alineación
 
 ## Validaciones Implementadas
 
-- ✓ Código de producto único
+### Productos
+- ✓ IDs únicos
 - ✓ Precios positivos
-- ✓ Cantidades válidas (≥ 0)
-- ✓ Stock suficiente para salidas
-- ✓ Formato correcto en CSV
-- ✓ Existencia de producto antes de operaciones
+- ✓ Stock no negativo
+- ✓ Detección automática de productos Resident Evil
 
-## Formato de Reportes
+### Clientes
+- ✓ Email con formato válido (@, .)
+- ✓ Teléfono numérico (mínimo 7 dígitos)
+- ✓ Nombre obligatorio
 
-Los reportes se generan en formato texto plano (.txt) con estructura tabular legible.
+### Facturación
+- ✓ Stock suficiente antes de vender
+- ✓ Cantidades válidas (> 0)
+- ✓ Cliente válido antes de facturar
+- ✓ Al menos un item en factura
 
-### Ejemplo Reporte de Inventario
+### Evaluación de Usados
+- ✓ Rango mínimo 10% del valor original
+- ✓ Máximo 100% del valor original
+- ✓ Factores de depreciación realistas
+- ✓ Validación de inputs numéricos
+
+## Características Avanzadas
+
+### Sistema de Descuentos Inteligente
+```python
+DESCUENTO_RESIDENT_EVIL = 0.15
+keywords = ['resident evil', 'umbrella', 'stars', 'leon', 'jill', ...]
 ```
-========================================
-   REPORTE DE INVENTARIO
-========================================
-Fecha: 2024-12-11 14:30:00
+Detecta automáticamente productos de la franquicia y aplica descuento.
 
-Código    Nombre         Precio    Stock
----------------------------------------
-P001      Laptop Dell    1200.50   10
-P002      Mouse          25.99     50
-...
-```
+### Búsqueda Flexible
+- Búsqueda por ID exacto
+- Búsqueda parcial por nombre (case-insensitive)
+- Resultados enumerados para selección rápida
+
+### Interfaz Intuitiva
+- Menús claros con opciones numeradas
+- Tips contextuales ("Use 'catalogo' para ver todos...")
+- Confirmaciones antes de operaciones críticas
+- Mensajes de éxito/error descriptivos
+
+### Manejo de Errores
+- Try-catch en operaciones de archivos
+- Validación de inputs con manejo de ValueError/IndexError
+- Mensajes amigables al usuario
+- Valores por defecto seguros
+
+## Datos del Sistema
+
+### Inventario Inicial
+- **120 videojuegos** (PS1, PS3, PS4, PS5, Xbox, PC, Switch, GameCube)
+- **18+ juegos de Resident Evil** con descuento automático
+- **45 productos gaming** (controles, periféricos, cosplay, decoración)
+- **Stock total:** 1500+ unidades valoradas en $40,000+
+
+### Ejemplos de Productos
+**Videojuegos:** The Last of Us Part II, Elden Ring, RE4 Remake, Baldur's Gate 3  
+**Gaming:** Controles DualSense, Mouse Logitech G502, Auriculares HyperX  
+**Cosplay:** Trajes de Leon, Jill, Ada Wong, Lady Dimitrescu
 
 ## Autores
+Samuel Andres Medina Pulido
+Miguel Angel Moreno Alvarez
+Sebastian Buritica Velasco 
 
-Samuel Medina Pulido
-Miguel Moreno Alvarez
-Sebastian Buritica Velasco
-
-## Notas de Desarrollo
-
-- Desarrollado como proyecto académico
-- Implementa conceptos de Programación Orientada a Objetos
-- Sistema de consola interactivo
-- Manejo completo de archivos (lectura/escritura)
+**Equipo Pyrants T-Store**  
+Proyecto desarrollado para el curso de Programación Orientada a Objetos
 
 ---
 
-**Curso**: [Nombre del Curso]  
-**Fecha**: Diciembre 2024
+**Universidad:** Universidad Nacional de Colombia  
+**Curso:** Programación Orientada a Objetos  
+**Fecha:** Diciembre 2024  
+**Lenguaje:** Python 3.8+
